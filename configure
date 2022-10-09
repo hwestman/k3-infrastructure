@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+task ansible:init#!/usr/bin/env bash
 
 set -o errexit
 set -o pipefail
