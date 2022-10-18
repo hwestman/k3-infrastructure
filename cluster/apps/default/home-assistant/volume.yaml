@@ -1,0 +1,13 @@
+# #pvc-6bd8458c-b500-49d2-ba48-0b553c7564f1
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: home-assistant-pvc
+#   namespace: default
+# spec:
+#   accessModes:
+#   - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 5Gi
+#   storageClassName: smb-retain
