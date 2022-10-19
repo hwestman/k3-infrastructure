@@ -14,8 +14,12 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: longhorn-frontend
-          servicePort: 80
+          service:
+            name: longhorn-frontend
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
   tls:
   - hosts:
     - longhorn.j-burg11.dev
