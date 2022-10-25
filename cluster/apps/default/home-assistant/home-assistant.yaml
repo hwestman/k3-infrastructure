@@ -32,7 +32,7 @@ metadata:
     external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
     external-dns/is-public: "true"
     hajimari.io/enable: "true"
-    hajimari.io/icon: "video-input-antenna"
+    hajimari.io/icon: "home-assistant"
     nginx.org/websocket-services: home-assistant
   name: home-assistant
   namespace: default
@@ -63,7 +63,7 @@ metadata:
     external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
     external-dns/is-public: "true"
     hajimari.io/enable: "true"
-    hajimari.io/icon: "video-input-antenna"
+    hajimari.io/icon: "code-tags"
   name: ha-code
   namespace: default
 spec:
