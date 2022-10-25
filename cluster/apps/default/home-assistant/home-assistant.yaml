@@ -154,6 +154,7 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: longhorn
+  volumeName: home-assistant-pv
 
 ---
 
