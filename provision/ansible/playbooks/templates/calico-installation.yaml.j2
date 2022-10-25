@@ -12,5 +12,7 @@ spec:
         encapsulation: "VXLANCrossSubnet"
         natOutgoing: Enabled
         nodeSelector: all()
+    nodeAddressAutodetectionV4:
+      interface: "eth.*"
   nodeMetricsPort: 9091
   typhaMetricsPort: 9093

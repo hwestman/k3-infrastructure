@@ -47,6 +47,8 @@ spec:
               value: "2"
             - name: address
               value: "${BOOTSTRAP_KUBE_VIP_ADDR}"
+            - name: vip_interface
+              value: "eth0"
           securityContext:
             capabilities:
               add:

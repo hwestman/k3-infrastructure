@@ -47,6 +47,8 @@ spec:
               value: "2"
             - name: address
               value: "{{ k3s_registration_address }}"
+            - name: vip_interface
+              value: "eth0"
           securityContext:
             capabilities:
               add:
