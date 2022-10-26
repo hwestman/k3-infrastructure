@@ -21,7 +21,12 @@ storage:
           [Link]
           Name=eth0
 ```
-- https://github.com/onedr0p/flux-cluster-template/issues/311
+- ssh-copy-id root@192.168.1.x
+
+# Install cluster
+- Checkout repo (this one) - based on https://github.com/onedr0p/flux-cluster-template/issues/311
+- Change interface in templates:
+
 ```
 # ./provision/ansible/playbooks/templates/calico-installation.yaml.j2
 ---
@@ -52,11 +57,10 @@ and
               value: "eth0"
 
 ```
-- ssh-copy-id root@192.168.1.x
 
-# Install cluster
-- https://github.com/onedr0p/flux-cluster-template
-
+# Bootstrap secrets
+- See home-assistant crd for password ref
 
 # Migrate volumes from Longhorn
 - Set backup target in longhorn to `nfs://192.168.1.49:/volume1/longhorn-backup`
+- Restore backup volumes
