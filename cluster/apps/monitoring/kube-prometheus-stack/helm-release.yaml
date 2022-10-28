@@ -25,6 +25,9 @@ spec:
   #   - name: rook-ceph-cluster
   #     namespace: rook-ceph
   values:
+    alertmanager:
+      enabled: false
+
     kube-state-metrics:
       metricLabelsAllowlist:
         - "persistentvolumeclaims=[*]"
@@ -84,6 +87,7 @@ spec:
         enabled: true
         port: 2381
         targetPort: 2381
+#####################################
     prometheus:
       ingress:
         enabled: true
@@ -94,22 +98,22 @@ spec:
         tls:
           - hosts:
               - *host
-      # thanosService:
-      #   enabled: false
-      # thanosServiceMonitor:
-      #   enabled: true
-      # thanosIngress:
-      #   enabled: true
-      #   pathType: Prefix
-      #   ingressClassName: "nginx"
-      #   annotations:
-      #     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-      #     nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
-      #   hosts:
-      #     - &host "thanos-sidecar.${SECRET_PUBLIC_DOMAIN}"
-      #   tls:
-      #     - hosts:
-      #         - *host
+      thanosService:
+        enabled: false
+      thanosServiceMonitor:
+        enabled: false
+      thanosIngress:
+        enabled: false
+        pathType: Prefix
+        ingressClassName: "nginx"
+        annotations:
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+        hosts:
+          - &host "thanos-sidecar.${SECRET_PUBLIC_DOMAIN}"
+        tls:
+          - hosts:
+              - *host
       prometheusSpec:
         replicas: 3
         replicaExternalLabelName: __replica__
