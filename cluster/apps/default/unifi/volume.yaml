@@ -1,0 +1,13 @@
+#pvc-18c6606b-7185-4810-8427-bf4c92e202c1
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: unifi-pvc
+  namespace: default
+spec:
+  storageClassName: smb-retain
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

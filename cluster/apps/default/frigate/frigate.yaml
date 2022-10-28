@@ -1,0 +1,210 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frigate-conf
+  namespace: default
+data:
+  config.yml: |
+    mqtt:
+      host: mosquitto-mosquitto.default
+      port: 1883
+
+    cameras:
+      driveway:
+        zones:
+          zone_front_of_garage:
+            coordinates: 1280,720,1280,205,0,220,0,720
+            objects:
+              - person
+              - car
+          zone_road:
+            coordinates: 0,0,1280,0,1280,0,1280,249,0,255
+        ffmpeg:
+          inputs:
+            - path: rtsp://192.168.1.161:554/s0
+              roles:
+                - detect
+                - rtmp
+                - record
+        snapshots:
+          enabled: true
+          bounding_box: true
+          retain:
+            default: 3
+        record:
+          enabled: True
+          retain_days: 0
+          events:
+            required_zones:
+              - zone_front_of_garage
+            retain:
+              default: 10
+        motion:
+          # Optional: The threshold passed to cv2.threshold to determine if a pixel is different enough to be counted as motion. (default: shown below)
+          # Increasing this value will make motion detection less sensitive and decreasing it will make motion detection more sensitive.
+          # The value should be between 1 and 255.
+          threshold: 25
+          # Optional: Minimum size in pixels in the resized motion image that counts as motion
+          # Increasing this value will prevent smaller areas of motion from being detected. Decreasing will make motion detection more sensitive to smaller
+          # moving objects.
+          contour_area: 100
+          # Optional: Alpha value passed to cv2.accumulateWeighted when averaging the motion delta across multiple frames (default: shown below)
+          # Higher values mean the current frame impacts the delta a lot, and a single raindrop may register as motion.
+          # Too low and a fast moving person wont be detected as motion.
+          delta_alpha: 0.2
+          # Optional: Alpha value passed to cv2.accumulateWeighted when averaging frames to determine the background (default: shown below)
+          # Higher values mean the current frame impacts the average a lot, and a new object will be averaged into the background faster.
+          # Low values will cause things like moving shadows to be detected as motion for longer.
+          # https://www.geeksforgeeks.org/background-subtraction-in-an-image-using-concept-of-running-average/
+          frame_alpha: 0.2
+          # Optional: Height of the resized motion frame  (default: 1/6th of the original frame height)
+          # This operates as an efficient blur alternative. Higher values will result in more granular motion detection at the expense of higher CPU usage.
+          # Lower values result in less CPU, but small changes may not register as motion.
+          frame_height: 180
+
+
+      garage:
+        ffmpeg:
+          inputs:
+            - path: rtsp://192.168.1.103:8554/unicast
+              roles:
+                - rtmp
+        # width: 1920
+        # height: 1080
+        # fps: 30
+      # front_door:
+      #   ffmpeg:
+      #     inputs:
+      #       - path: rtsp://192.168.1.43:8554/unicast
+      #         roles:
+      #           - rtmp
+      #   # width: 600
+      #   # height: 800
+      #   # fps: 30
+
+    detectors:
+      cpu1:
+        type: cpu
+      cpu2:
+        type: cpu
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.org/websocket-services: frigate-rtmp
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24
+    # type of authentication
+    #nginx.ingress.kubernetes.io/auth-type: basic
+    # name of the secret that contains the user/password definitions
+    #nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    # message to display with an appropriate context why the authentication is required
+    #nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
+
+  name: frigate
+  namespace: default
+spec:
+  # defaultBackend:
+  #   service:
+  #     name: unifi-video-http
+  #     port:
+  #       number: 7080
+  rules:
+  - host: "frigate.j-burg11.dev"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: frigate
+            port:
+              number: 5000
+  tls:
+  - hosts:
+    - frigate.j-burg11.dev
+    secretName: frigate-tls-prod
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frigate
+  namespace: default
+spec:
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  selector:
+    app: frigate
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frigate-rtmp
+  namespace: default
+spec:
+  selector:
+    app: frigate
+  ports:
+    - protocol: TCP
+      port: 1935
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frigate-threek
+  namespace: default
+spec:
+  selector:
+    app: frigate
+  ports:
+    - protocol: TCP
+      port: 3000
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: frigate
+  namespace: default
+spec:
+  serviceName: "frigate"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frigate
+  template:
+    metadata:
+      labels:
+        app: frigate
+    spec:
+      containers:
+      - image: blakeblackshear/frigate:stable-amd64
+        imagePullPolicy: Always
+        name: frigate
+        volumeMounts:
+        - mountPath: /media/frigate
+          name: frigate-volume
+        - mountPath: /config
+          name: frigate-config-volume
+        env:
+          - name: FRIGATE_RTSP_PASSWORD
+            value: ''
+      volumes:
+      - name: frigate-volume
+        persistentVolumeClaim:
+          claimName: frigate-claim
+      - name: frigate-config-volume
+        configMap:
+          name: frigate-conf

@@ -1,0 +1,13 @@
+#pvc-c3bc245d-7a20-4495-b5a7-dc7f202bde70
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: grafana-pvc
+  namespace: default
+spec:
+  storageClassName: smb-grafana-retain
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

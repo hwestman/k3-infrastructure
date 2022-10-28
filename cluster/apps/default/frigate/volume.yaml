@@ -1,0 +1,13 @@
+#pvc-7c5db58b-de8b-4124-b399-67e6b9362072
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: frigate-claim
+  namespace: default
+spec:
+  storageClassName: smb-retain
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
