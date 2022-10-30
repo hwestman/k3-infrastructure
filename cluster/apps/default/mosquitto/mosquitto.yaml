@@ -112,7 +112,7 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: longhorn
-  volumeName: mosquitto
+  volumeName: mosquitto-pv
 
 ---
 kind: PersistentVolume
