@@ -74,6 +74,7 @@ spec:
           volumeMounts:
             - mountPath: /mosquitto/data
               name: mosquitto-volume
+              subPath: mosquitto/data
             - mountPath: /mosquitto/config
               name: config
       volumes:
