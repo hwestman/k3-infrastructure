@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -62,25 +63,25 @@ spec:
         app: mosquitto
     spec:
       containers:
-      - name: mosquitto
-        image: eclipse-mosquitto:2.0.15
-        # ports:
-        # - containerPort: 80
-        securityContext:
-          runAsUser: 0
-        volumeMounts:
-        - mountPath: /mosquitto/data
-          name: mosquitto-volume
-        - mountPath: /mosquitto/config
-          name: config
+        - name: mosquitto
+          image: eclipse-mosquitto:2.0.15
+          # ports:
+          # - containerPort: 80
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - mountPath: /mosquitto/data
+              name: mosquitto-volume
+            - mountPath: /mosquitto/config
+              name: config
       volumes:
-      - name: mosquitto-volume
-        persistentVolumeClaim:
-          claimName: mosquitto-pvc
-      - name: config
-        configMap:
-          name: mosquitto-conf
-            # resources:
+        - name: mosquitto-volume
+          persistentVolumeClaim:
+            claimName: mosquitto-pvc
+        - name: config
+          configMap:
+            name: mosquitto-conf
+              # resources:
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -104,8 +105,8 @@ metadata:
   namespace: default
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi
-  storageClassName: smb-retain
+  storageClassName: longhorn

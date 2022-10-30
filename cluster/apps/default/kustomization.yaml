@@ -7,4 +7,5 @@ resources:
   - reloader
   - home-assistant
   - mariadb
+  - mosquitto
   # - unifi

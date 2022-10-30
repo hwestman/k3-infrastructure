@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: unifi-exporter
-  namespace: metrics
+  namespace: monitoring
 spec:
   replicas: 1
   selector:
