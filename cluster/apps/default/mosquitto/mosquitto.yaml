@@ -77,7 +77,7 @@ spec:
       volumes:
         - name: mosquitto-volume
           persistentVolumeClaim:
-            claimName: mosquitto-pvc-2
+            claimName: mosquitto-pvc
         - name: config
           configMap:
             name: mosquitto-conf
@@ -103,7 +103,7 @@ data:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mosquitto-pvc-2
+  name: mosquitto-pvc
   namespace: default
 spec:
   accessModes:
