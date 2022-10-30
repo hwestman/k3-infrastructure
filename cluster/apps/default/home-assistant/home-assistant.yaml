@@ -92,7 +92,7 @@ metadata:
   namespace: default
 spec:
   serviceName: home-assistant
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: home-assistant
