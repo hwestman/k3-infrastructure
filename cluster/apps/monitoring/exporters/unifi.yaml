@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifi-exporter
+  namespace: metrics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unifi-exporter
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: unifi-exporter
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "9130"
+    spec:
+      containers:
+        - args:
+            - -config.file=/unifi_exporter/config.yml
+          command:
+            - /bin/unifi_exporter
+          image: jessestuart/unifi_exporter
+          imagePullPolicy: Always
+          name: unifi-exporter
+          volumeMounts:
+            - mountPath: /unifi_exporter/config.yml
+              name: config-volume
+              subPath: config.yml
+      volumes:
+        - name: config-volume
+          configMap:
+            name: unifi-exporter-conf

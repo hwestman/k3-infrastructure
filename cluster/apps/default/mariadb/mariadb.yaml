@@ -1,0 +1,87 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb
+  namespace: default
+spec:
+  ports:
+    - protocol: TCP
+      port: 3306
+  selector:
+    app: mariadb
+  type: ClusterIP
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mariadb
+  namespace: default
+spec:
+  serviceName: "mariadb"
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+        - image: mariadb:10.4.12
+          name: mariadb
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb
+                  key: password
+          ports:
+            - containerPort: 3306
+              name: mariadb
+          volumeMounts:
+            - name: mariadb-persistent-storage
+              mountPath: /var/lib/mysql
+              subPath: mariadb/var/lib/mysql
+      volumes:
+        - name: mariadb-persistent-storage
+          persistentVolumeClaim:
+            claimName: mariadb-pvc
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mariadb-pvc
+  namespace: default
+spec:
+  storageClassName: longhorn
+  volumeName: mariadb-pv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mariadb-pv
+  namespace: default
+spec:
+  storageClassName: longhorn
+  # by default, the volume will be not deleted if you delete the PVC, change to
+  # "Delete" if you wish the volume to be deleted automatically with the PVC
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeHandle: mariadb
