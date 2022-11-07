@@ -1,4 +1,19 @@
 ---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: prometheus-kube-prometheus-stack-prometheus-db-prometheus-kube-prometheus-stack-prometheus-0
+  namespace: monitoring
+spec:
+  storageClassName: longhorn
+  volumeName: prometheus-pv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 25Gi
+
+---
 kind: PersistentVolume
 apiVersion: v1
 metadata:
