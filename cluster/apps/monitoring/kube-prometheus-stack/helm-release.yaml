@@ -135,8 +135,8 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              # volumeName: "prometheus"
-              storageClassName: "longhorn"
+              volumeName: "prometheus"
+              # storageClassName: "longhorn"
               resources:
                 requests:
                   storage: 20Gi
