@@ -119,10 +119,10 @@ spec:
         replicaExternalLabelName: __replica__
         externalLabels:
           cluster: j-burg11-2
-        # thanos:
-        #   image: quay.io/thanos/thanos:v0.28.1
-        #   # renovate: datasource=docker depName=quay.io/thanos/thanos
-        #   version: "v0.28.1"
+      # thanos:
+      #   image: quay.io/thanos/thanos:v0.28.1
+      #   # renovate: datasource=docker depName=quay.io/thanos/thanos
+      #   version: "v0.28.1"
         podAntiAffinity: hard
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
