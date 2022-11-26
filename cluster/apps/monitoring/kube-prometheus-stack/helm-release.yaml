@@ -137,9 +137,9 @@ spec:
             spec:
               #volumeName: "prometheus"
               storageClassName: "longhorn"
-              # resources:
-              #   requests:
-              #     storage: 20Gi
+              resources:
+                requests:
+                  storage: 20Gi
         resources:
           requests:
             cpu: 10m
