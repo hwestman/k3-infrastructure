@@ -50,7 +50,7 @@ spec:
             etcd:
               enabled: true
     kubelet:
-      enabled: true
+      enabled: false
       serviceMonitor:
         metricRelabelings:
           - action: replace
@@ -58,27 +58,27 @@ spec:
               - node
             targetLabel: instance
     kubeApiServer:
-      enabled: true
+      enabled: false
     kubeControllerManager:
-      enabled: true
+      enabled: false
       endpoints:
         - 192.168.1.213
         - 192.168.1.214
         - 192.168.1.215
     kubeScheduler:
-      enabled: true
+      enabled: false
       endpoints:
         - 192.168.1.213
         - 192.168.1.214
         - 192.168.1.215
     kubeProxy:
-      enabled: true
+      enabled: false
       endpoints:
         - 192.168.1.213
         - 192.168.1.214
         - 192.168.1.215
     kubeEtcd:
-      enabled: true
+      enabled: false
       endpoints:
         - 192.168.1.213
         - 192.168.1.214
@@ -135,8 +135,8 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              volumeName: "prometheus"
-              # storageClassName: "longhorn"
+              $volumeName: "prometheus"
+              storageClassName: "longhorn"
               # resources:
               #   requests:
               #     storage: 20Gi
