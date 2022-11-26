@@ -135,7 +135,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              $volumeName: "prometheus"
+              #volumeName: "prometheus"
               storageClassName: "longhorn"
               # resources:
               #   requests:
