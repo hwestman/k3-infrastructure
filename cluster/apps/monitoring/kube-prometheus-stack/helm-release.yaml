@@ -169,7 +169,7 @@ spec:
             bearer_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI5Y2NhYTU5MDkwYzQ0ZWU4YTZlNjViN2IwZjViZGNjMiIsImlhdCI6MTU4Mjk3OTE5MSwiZXhwIjoxODk4MzM5MTkxfQ.MHC03LCvb46UaAf1Xf4NksLm2lJtEqoWstCx-YpK1jg'
             # scheme: https
             static_configs:
-              - targets: ['home-assistant.default:8123']
+              - targets: ['ha.j-burg11.dev']
 
           - job_name: 'edgerouter-snmp'
             static_configs:
