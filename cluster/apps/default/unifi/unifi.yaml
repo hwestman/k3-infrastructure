@@ -71,31 +71,62 @@ spec:
     app: unifi-controller
   type: NodePort
 ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   annotations:
+#     cert-manager.io/cluster-issuer: letsencrypt-production
+#     # nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.133
+#     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+#   name: unifi-controller
+#   namespace: default
+# spec:
+#   rules:
+#     - host: "unifi.j-burg11.dev"
+#       http:
+#         paths:
+#           - pathType: Prefix
+#             path: "/"
+#             backend:
+#               service:
+#                 name: unifi-controller
+#                 port:
+#                   number: 443
+#   tls:
+#     - hosts:
+#         - unifi.j-burg11.dev
+#       secretName: unifi-tls-prod
+
+
+#---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    # nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.133
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-  name: unifi-controller
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+    hajimari.io/enable: "true"
+    hajimari.io/icon: "content-save"
+    nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+  name: unifi
   namespace: default
 spec:
+  ingressClassName: nginx
   rules:
-    - host: "unifi.j-burg11.dev"
+    - host: unifi.j-burg11.dev
       http:
         paths:
-          - pathType: Prefix
-            path: "/"
-            backend:
+          - backend:
               service:
                 name: unifi-controller
                 port:
-                  number: 443
+                  number: 80
+            path: /
+            pathType: Prefix
   tls:
     - hosts:
         - unifi.j-burg11.dev
       secretName: unifi-tls-prod
+
 
 ---
 apiVersion: apps/v1
