@@ -148,7 +148,7 @@ spec:
         app: unifi-controller
     spec:
       containers:
-        - image: jacobalberty/unifi:v7.1.66
+        - image: jacobalberty/unifi:v7.3.76
           imagePullPolicy: Always
           name: unifi-controller
           volumeMounts:
