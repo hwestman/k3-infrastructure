@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,7 +7,7 @@ metadata:
 data:
   config.yml: |
     mqtt:
-      host: mosquitto-mosquitto.default
+      host: mosquitto.default
       port: 1883
 
     cameras:
@@ -30,7 +31,7 @@ data:
           enabled: true
           bounding_box: true
           retain:
-            default: 3
+            default: 1
         record:
           enabled: True
           retain_days: 0
@@ -38,7 +39,7 @@ data:
             required_zones:
               - zone_front_of_garage
             retain:
-              default: 10
+              default: 1
         motion:
           # Optional: The threshold passed to cv2.threshold to determine if a pixel is different enough to be counted as motion. (default: shown below)
           # Increasing this value will make motion detection less sensitive and decreasing it will make motion detection more sensitive.
@@ -94,39 +95,68 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    nginx.org/websocket-services: frigate-rtmp
     cert-manager.io/cluster-issuer: letsencrypt-production
-    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24
-    # type of authentication
-    #nginx.ingress.kubernetes.io/auth-type: basic
-    # name of the secret that contains the user/password definitions
-    #nginx.ingress.kubernetes.io/auth-secret: basic-auth
-    # message to display with an appropriate context why the authentication is required
-    #nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
-
+    # external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+    # external-dns/is-public: "true"
+    hajimari.io/enable: "true"
+    # hajimari.io/icon: "home-assistant"
+    nginx.org/websocket-services: frigate-rtmp
   name: frigate
   namespace: default
 spec:
-  # defaultBackend:
-  #   service:
-  #     name: unifi-video-http
-  #     port:
-  #       number: 7080
   rules:
-  - host: "frigate.j-burg11.dev"
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: frigate
-            port:
-              number: 5000
+    - host: frigate.j-burg11.dev
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: frigate
+                port:
+                  number: 5000
   tls:
-  - hosts:
-    - frigate.j-burg11.dev
-    secretName: frigate-tls-prod
+    - hosts:
+        - frigate.j-burg11.dev
+      secretName: frigate-tls-prod
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   annotations:
+#     nginx.org/websocket-services: frigate-rtmp
+#     cert-manager.io/cluster-issuer: letsencrypt-production
+#     nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24
+#     # type of authentication
+#     #nginx.ingress.kubernetes.io/auth-type: basic
+#     # name of the secret that contains the user/password definitions
+#     #nginx.ingress.kubernetes.io/auth-secret: basic-auth
+#     # message to display with an appropriate context why the authentication is required
+#     #nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
+
+#   name: frigate
+#   namespace: default
+# spec:
+#   # defaultBackend:
+#   #   service:
+#   #     name: unifi-video-http
+#   #     port:
+#   #       number: 7080
+#   rules:
+#   - host: "frigate.j-burg11.dev"
+#     http:
+#       paths:
+#       - pathType: Prefix
+#         path: "/"
+#         backend:
+#           service:
+#             name: frigate
+#             port:
+#               number: 5000
+#   tls:
+#   - hosts:
+#     - frigate.j-burg11.dev
+#     secretName: frigate-tls-prod
 
 ---
 
@@ -190,21 +220,36 @@ spec:
         app: frigate
     spec:
       containers:
-      - image: blakeblackshear/frigate:stable-amd64
-        imagePullPolicy: Always
-        name: frigate
-        volumeMounts:
-        - mountPath: /media/frigate
-          name: frigate-volume
-        - mountPath: /config
-          name: frigate-config-volume
-        env:
-          - name: FRIGATE_RTSP_PASSWORD
-            value: ''
+        - image: blakeblackshear/frigate:stable-amd64
+          imagePullPolicy: Always
+          name: frigate
+          volumeMounts:
+            - mountPath: /media/frigate
+              name: frigate-volume
+            - mountPath: /config
+              name: frigate-config-volume
+          env:
+            - name: FRIGATE_RTSP_PASSWORD
+              value: ''
       volumes:
-      - name: frigate-volume
-        persistentVolumeClaim:
-          claimName: frigate-claim
-      - name: frigate-config-volume
-        configMap:
-          name: frigate-conf
+        - name: frigate-volume
+          persistentVolumeClaim:
+            claimName: frigate-claim
+        - name: frigate-config-volume
+          configMap:
+            name: frigate-conf
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: frigate-claim
+  namespace: default
+spec:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
