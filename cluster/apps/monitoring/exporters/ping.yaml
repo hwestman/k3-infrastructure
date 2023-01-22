@@ -38,7 +38,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ping-exporter-conf
-  namespace: metrics
+  namespace: monitoring
 data:
   config: |
     targets:
