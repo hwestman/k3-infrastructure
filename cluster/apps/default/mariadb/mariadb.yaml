@@ -38,6 +38,10 @@ spec:
                 secretKeyRef:
                   name: mariadb
                   key: password
+            - name: MARIADB_AUTO_UPGRADE
+              value: "1"
+            - name: MARIADB_INITDB_SKIP_TZINFO
+              value: "1"
           ports:
             - containerPort: 3306
               name: mariadb
