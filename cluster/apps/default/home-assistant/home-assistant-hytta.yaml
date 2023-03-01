@@ -96,8 +96,6 @@ spec:
       labels:
         app: home-assistant-hytta
     spec:
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: home-assistant
           image: homeassistant/home-assistant:2023.1.7
