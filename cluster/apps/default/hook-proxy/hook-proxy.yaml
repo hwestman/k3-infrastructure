@@ -41,12 +41,11 @@ spec:
 ---
 
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deploy
 metadata:
   name: hook-proxy
   namespace: default
 spec:
-  serviceName: hook-proxy
   replicas: 1
   selector:
     matchLabels:
