@@ -84,7 +84,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: home-assistant
+  name: home-assistant-hytta
   namespace: default
 spec:
   replicas: 1
