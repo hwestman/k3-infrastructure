@@ -196,21 +196,3 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: longhorn
-  volumeName: home-assistant-hytta-mysql-pv
-
----
-
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: home-assistant-hytta-mysql-pv
-  namespace: default
-spec:
-  storageClassName: longhorn
-  # by default, the volume will be not deleted if you delete the PVC, change to
-  # "Delete" if you wish the volume to be deleted automatically with the PVC
-  persistentVolumeReclaimPolicy: Retain
-  capacity:
-    storage: 5Gi
-  accessModes:
-    - ReadWriteOnce
