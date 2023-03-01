@@ -10,3 +10,4 @@ resources:
   - mosquitto
   - unifi
   - frigate
+  - hook-proxy
