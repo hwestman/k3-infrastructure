@@ -65,12 +65,12 @@ spec:
           env:
             - name: TZ
               value: 'Europe/Oslo'
-            - name: DOTNET_HAToken
+            - name: HAToken
               valueFrom:
                 secretKeyRef:
                   name: hook-proxy
                   key: TOKEN
-            - name: DOTNET_HABaseURL
+            - name: HABaseURL
               valueFrom:
                 secretKeyRef:
                   name: hook-proxy
