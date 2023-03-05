@@ -132,9 +132,6 @@ spec:
         - name: home-assistant-hytta-volume
           persistentVolumeClaim:
             claimName: home-assistant-hytta-pvc
-        - name: home-assistant-hytta-mysql-volume
-          persistentVolumeClaim:
-            claimName: home-assistant-hytta-mysql-pvc
 
 ---
 
