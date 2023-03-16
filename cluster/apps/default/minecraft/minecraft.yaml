@@ -30,19 +30,6 @@ data:
   # TICK_DISTANCE: "4"
   # MAX_THREADS: "8"
 ---
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: bds
-  namespace: default
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: longhorn
----
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -87,16 +74,23 @@ spec:
           livenessProbe: *probe
           tty: true
           stdin: true
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 1Gi
-        storageClassName: longhorn
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: bds
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: bds
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: longhorn
 ---
 apiVersion: v1
 kind: Service
