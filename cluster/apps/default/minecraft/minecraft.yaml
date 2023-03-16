@@ -1,5 +1,25 @@
 ---
 apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: bds
+spec:
+  selector:
+    app: bds
+  ports:
+    - port: 19132
+      protocol: UDP
+  ipFamily: IPv4
+  # Use LoadBalancer if running on a provider that supports that
+  #  type: LoadBalancer
+  # or use NodePort on a non-managed system;
+  # however, you'll need to lookup port assigned to the service
+  type: NodePort
+
+---
+
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: minecraft-bedrock
@@ -29,7 +49,9 @@ data:
   # VIEW_DISTANCE: "10"
   # TICK_DISTANCE: "4"
   # MAX_THREADS: "8"
+
 ---
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -91,21 +113,3 @@ spec:
     requests:
       storage: 1Gi
   storageClassName: longhorn
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: default
-  name: bds
-spec:
-  selector:
-    app: bds
-  ports:
-    - port: 19132
-      protocol: UDP
-  ipFamily: IPv4
-  # Use LoadBalancer if running on a provider that supports that
-  #  type: LoadBalancer
-  # or use NodePort on a non-managed system;
-  # however, you'll need to lookup port assigned to the service
-  type: NodePort
