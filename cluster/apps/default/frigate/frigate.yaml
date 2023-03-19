@@ -84,10 +84,9 @@ data:
       #   # fps: 30
 
     detectors:
-      cpu1:
-        type: cpu
-      cpu2:
-        type: cpu
+      coral1:
+        type: edgetpu
+        device: pci:0
 
 ---
 
@@ -210,7 +209,7 @@ metadata:
   namespace: default
 spec:
   serviceName: "frigate"
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: frigate
@@ -223,6 +222,8 @@ spec:
         - image: blakeblackshear/frigate:stable-amd64
           imagePullPolicy: Always
           name: frigate
+          devices:
+            - /dev/apex_0:/dev/apex_0
           volumeMounts:
             - mountPath: /media/frigate
               name: frigate-volume
@@ -238,6 +239,11 @@ spec:
         - name: frigate-config-volume
           configMap:
             name: frigate-conf
+      tolerations:
+        - key: "need-coral"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
 
 ---
 

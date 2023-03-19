@@ -58,9 +58,20 @@ and
 
 ```
 
+# Taints
+kubectl taint nodes k3s-node-4 need-coral=true:NoSchedule
+
 # Bootstrap secrets
 - See home-assistant crd for password ref
 
 # Migrate volumes from Longhorn
 - Set backup target in longhorn to `nfs://192.168.1.49:/volume1/longhorn-backup`
 - Restore backup volumes
+
+
+# Adding nodes
+
+# Replacing nodes
+- kubectl delete node
+- run the nuke Ansible playbook ONLY on that node
+- follow https://github.com/onedr0p/flux-cluster-template/discussions/589
