@@ -6,10 +6,6 @@ metadata:
   namespace: default
 data:
   config.yml: |
-    mqtt:
-      host: mosquitto.default
-      port: 1883
-
     cameras:
       driveway:
         zones:
