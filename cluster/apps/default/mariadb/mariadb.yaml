@@ -52,14 +52,13 @@ spec:
       volumes:
         - name: mariadb-persistent-storage
           persistentVolumeClaim:
-            claimName: mariadb-pvc
-
+            claimName: mariadb-pvc-v2
 ---
 
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: mariadb-pvc
+  name: mariadb-pvc-v2
   namespace: default
 spec:
   storageClassName: longhorn
@@ -90,6 +89,21 @@ spec:
     fsType: ext4
     volumeHandle: mariadb-v2
 
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mariadb-pvc
+  namespace: default
+spec:
+  storageClassName: longhorn
+  volumeName: mariadb-pv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
 ---
 # attempting to deprecate this one
 kind: PersistentVolume
