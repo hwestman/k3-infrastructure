@@ -98,7 +98,7 @@ spec:
     spec:
       containers:
         - name: home-assistant
-          image: homeassistant/home-assistant:2023.1.7
+          image: homeassistant/home-assistant:2023.3.6
           imagePullPolicy: Always
           env:
             - name: TZ
