@@ -115,7 +115,7 @@ spec:
           - hosts:
               - *host
       prometheusSpec:
-        replicas: 0
+        replicas: 1
         replicaExternalLabelName: __replica__
         externalLabels:
           cluster: j-burg11-2
