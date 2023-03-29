@@ -115,7 +115,7 @@ spec:
           - hosts:
               - *host
       prometheusSpec:
-        replicas: 1
+        replicas: 0
         replicaExternalLabelName: __replica__
         externalLabels:
           cluster: j-burg11-2
@@ -128,8 +128,8 @@ spec:
         serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
-        retention: 60d
-        retentionSize: 45GB
+        retention: 40d
+        retentionSize: 50GB
         enableAdminAPI: true
         walCompression: true
         storageSpec:
@@ -139,7 +139,7 @@ spec:
               storageClassName: "longhorn"
               resources:
                 requests:
-                  storage: 40Gi
+                  storage: 50Gi
         resources:
           requests:
             cpu: 10m
