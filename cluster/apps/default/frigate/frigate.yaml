@@ -119,7 +119,7 @@ metadata:
   namespace: default
 spec:
   serviceName: "frigate"
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: frigate
