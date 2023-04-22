@@ -4,7 +4,7 @@
 - dnf check-update
 - sudo dnf upgrade
 - Set up NTP - it was set to manual by default
-- Set NIC name to the same for all nodes - https://docs.fedoraproject.org/en-US/fedora-coreos/customize-nic/
+- Set NIC name to the same for all nodes - task ansible:prepare
 ```
 sudo vim /etc/systemd/network/25-eth0.link
 
@@ -17,7 +17,7 @@ storage:
       contents:
         inline: |
           [Match]
-          MACAddress=XX:XX:XX:XX:XX:XX:XX:XX
+          MACAddress=c8:60:00:0a:8b:f7
           [Link]
           Name=eth0
 ```
