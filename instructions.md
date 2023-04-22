@@ -17,7 +17,7 @@ storage:
       contents:
         inline: |
           [Match]
-          MACAddress=c8:60:00:0a:8b:f7
+          MACAddress=4c:cc:6a:65:1b:28
           [Link]
           Name=eth0
 ```
