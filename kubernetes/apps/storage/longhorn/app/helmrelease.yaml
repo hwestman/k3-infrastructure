@@ -1,0 +1,79 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: longhorn
+  namespace: storage
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: longhorn
+      version: 1.4.1
+      sourceRef:
+        kind: HelmRepository
+        name: longhorn
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    ingress:
+      ## Set to true to enable ingress record generation
+      enabled: true
+
+      ## Add ingressClassName to the Ingress
+      ## Can replace the kubernetes.io/ingress.class annotation on v1.18+
+      ingressClassName: nginx
+
+      host: &host "longhorn.${SECRET_DOMAIN}"
+
+      ## Set this to true in order to enable TLS on the ingress record
+      tls: true
+
+      ## Enable this in order to enable that the backend service will be connected at port 443
+      secureBackends: false
+
+      ## If TLS is set to true, you must declare what secret will store the key/certificate for TLS
+      tlsSecret: *host
+
+      ## If ingress is enabled you can set the default ingress path
+      ## then you can access the UI by using the following full path {{host}}+{{path}}
+      path: /
+
+      ## Ingress annotations done as key:value pairs
+      ## If you're using kube-lego, you will want to add:
+      ## kubernetes.io/tls-acme: true
+      ##
+      ## For a full list of possible ingress annotations, please see
+      ## ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/annotations.md
+      ##
+      ## If tls is set to true, annotation ingress.kubernetes.io/secure-backends: "true" will automatically be set
+      annotations:
+      #  kubernetes.io/ingress.class: nginx
+      #  kubernetes.io/tls-acme: true
+        ginx.ingress.kubernetes.io/whitelist-source-range: |
+            10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+        hajimari.io/enable: "true"
+
+      #secrets:
+      ## If you're providing your own certificates, please use this to add the certificates as secrets
+      ## key and certificate should start with -----BEGIN CERTIFICATE----- or
+      ## -----BEGIN RSA PRIVATE KEY-----
+      ##
+      ## name should line up with a tlsSecret set further up
+      ## If you're using kube-lego, this is unneeded, as it will create the secret for you if it is not set
+      ##
+      ## It is also possible to create and manage the certificates outside of this helm chart
+      ## Please see README.md for more information
+      # - name: longhorn.local-tls
+      #   key:
+      #   certificate:
