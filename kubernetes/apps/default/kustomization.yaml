@@ -10,3 +10,4 @@ resources:
   - ./hook-proxy
   - ./mosquitto
   - ./unifi
+  - ./frigate
