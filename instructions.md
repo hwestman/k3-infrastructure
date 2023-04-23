@@ -58,6 +58,20 @@ and
 
 ```
 
+# install disks on nodes
+https://www.techotopia.com/index.php/Adding_a_New_Disk_Drive_to_a_Fedora_Linux_System
+lsblk -f
+
+fdisk /dev/sd*
+
+vim /etc/fstab
+UUID=<INSERT UUID> /mnt/disk2              ext3    defaults,errors=remount-ro  0 1
+
+# Updates from template
+Changes from the template was updated with
+`git `
+`git merge v3.14.0 --allow-unrelated-histories`
+
 # Taints
 kubectl taint nodes k3s-node-4 need-coral=true:NoSchedule
 

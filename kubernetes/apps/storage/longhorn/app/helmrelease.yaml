@@ -27,7 +27,9 @@ spec:
     keepHistory: false
   values:
     defaultSettings:
-      deletingConfirmationFlag: true
+      autoDeletePodWhenVolumeDetachedUnexpectedly: true
+
+    #   deletingConfirmationFlag: true
     ingress:
       ## Set to true to enable ingress record generation
       enabled: true
