@@ -8,3 +8,5 @@ resources:
   - ./mariadb
   - ./home-assistant
   - ./hook-proxy
+  - ./mosquitto
+  - ./unifi
