@@ -147,3 +147,25 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: longhorn
+  volumeName: home-assistant-hytta-pv
+
+---
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: home-assistant-hytta-pv
+  namespace: default
+spec:
+  storageClassName: longhorn
+  # by default, the volume will be not deleted if you delete the PVC, change to
+  # "Delete" if you wish the volume to be deleted automatically with the PVC
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeHandle: home-assistant-hytta
