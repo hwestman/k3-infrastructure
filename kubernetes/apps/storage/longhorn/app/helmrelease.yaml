@@ -26,6 +26,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    defaultSettings:
+      deletingConfirmationFlag: true
     ingress:
       ## Set to true to enable ingress record generation
       enabled: true
