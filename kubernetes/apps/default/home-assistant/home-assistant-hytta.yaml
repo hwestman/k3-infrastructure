@@ -87,7 +87,7 @@ metadata:
   name: home-assistant-hytta
   namespace: default
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: home-assistant-hytta

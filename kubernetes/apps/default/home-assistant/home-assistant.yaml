@@ -152,7 +152,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 10Gi
   storageClassName: longhorn
   volumeName: home-assistant-pv
 
@@ -169,7 +169,7 @@ spec:
   # "Delete" if you wish the volume to be deleted automatically with the PVC
   persistentVolumeReclaimPolicy: Retain
   capacity:
-    storage: 5Gi
+    storage: 10Gi
   accessModes:
     - ReadWriteOnce
   csi:
