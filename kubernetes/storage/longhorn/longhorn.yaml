@@ -18,9 +18,9 @@ spec:
   privileged: true
   allowPrivilegeEscalation: true
   requiredDropCapabilities:
-  - NET_RAW
+    - NET_RAW
   allowedCapabilities:
-  - SYS_ADMIN
+    - SYS_ADMIN
   hostNetwork: false
   hostIPC: false
   hostPID: true
@@ -33,12 +33,12 @@ spec:
   supplementalGroups:
     rule: RunAsAny
   volumes:
-  - configMap
-  - downwardAPI
-  - emptyDir
-  - secret
-  - projected
-  - hostPath
+    - configMap
+    - downwardAPI
+    - emptyDir
+    - secret
+    - projected
+    - hostPath
 ---
 # Source: longhorn/templates/serviceaccount.yaml
 apiVersion: v1
@@ -113,7 +113,7 @@ spec:
     listKind: BackingImageDataSourceList
     plural: backingimagedatasources
     shortNames:
-    - lhbids
+      - lhbids
     singular: backingimagedatasource
   scope: Namespaced
   versions:
