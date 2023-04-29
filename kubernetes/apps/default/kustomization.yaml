@@ -11,3 +11,4 @@ resources:
   - ./mosquitto
   - ./unifi
   - ./frigate
+  - ./kube-plex

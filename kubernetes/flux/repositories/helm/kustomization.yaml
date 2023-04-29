@@ -16,3 +16,4 @@ resources:
   - ./weave-gitops.yaml
   - ./longhorn.yaml
   - ./prometheus-community-charts.yaml
+  - ./kube-plex.yaml

@@ -67,6 +67,9 @@ fdisk /dev/sd*
 vim /etc/fstab
 UUID=<INSERT UUID> /mnt/disk2              ext3    defaults,errors=remount-ro  0 1
 
+### Expand volume
+`lvextend -l +100%FREE --resizefs fedora/root`
+
 # Updates from template
 Changes from the template was updated with
 `git `
