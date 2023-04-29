@@ -146,7 +146,7 @@ spec:
           failureThreshold: 30
 
     ingress:
-      enabled: true
+      enabled: false
       # Used to create an Ingress record.
       hosts:
         - plex.j-burg11.dev
