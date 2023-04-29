@@ -1,0 +1,28 @@
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+    external-dns/is-public: "true"
+    hajimari.io/enable: "true"
+  name: kube-plex
+  namespace: default
+spec:
+  rules:
+    - host: plex.j-burg11.dev
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: kube-plex-kube-plex
+                port:
+                  number: 32400
+  tls:
+    - hosts:
+        - plex.j-burg11.dev
+      secretName: plex-tls-prod
