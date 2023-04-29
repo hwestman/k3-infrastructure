@@ -4,6 +4,7 @@ kind: HelmRelease
 metadata:
   name: kube-plex
   namespace: default
+
 spec:
   interval: 15m
   chart:
