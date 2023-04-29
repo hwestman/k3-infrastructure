@@ -149,22 +149,20 @@ spec:
       enabled: true
       # Used to create an Ingress record.
       hosts:
-        - host: plex.j-burg11.dev
-          paths:
-            - path: /
-              pathType: Prefix
+        - plex.j-burg11.dev
       annotations:
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        external-dns/is-public: "true"
+        hajimari.io/enable: "true"
         hajimari.io/icon: video-input-antenna
         # kubernetes.io/ingress.class: nginx
         # kubernetes.io/tls-acme: "true"
       tls:
-        - hosts:
+        # Secrets must be manually created in the namespace.
+        - secretName: plex-tls-prod
+          hosts:
             - plex.j-burg11.dev
-      # Secrets must be manually created in the namespace.
-      # - secretName: chart-example-tls
-      #   hosts:
-      #     - chart-example.local
 
     rbac:
       create: true
