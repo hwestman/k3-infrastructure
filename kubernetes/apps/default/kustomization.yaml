@@ -11,4 +11,4 @@ resources:
   - ./mosquitto
   - ./unifi
   - ./frigate
-  - ./kube-plex/ks.yaml
+  # - ./kube-plex/ks.yaml
