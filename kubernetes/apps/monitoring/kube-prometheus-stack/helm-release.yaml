@@ -30,6 +30,9 @@ spec:
         - key: "zigbee"
           operator: "Exists"
           effect: "NoExecute"
+        - key: "coral"
+          operator: "Exists"
+          effect: "NoExecute"
 
     alertmanager:
       enabled: false
