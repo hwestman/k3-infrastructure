@@ -25,10 +25,11 @@ spec:
   #   - name: rook-ceph-cluster
   #     namespace: rook-ceph
   values:
-    tolerations:
-      - key: "zigbee"
-        operator: "Exists"
-        effect: "NoExecute"
+    prometheus-node-exporter:
+      tolerations:
+        - key: "zigbee"
+          operator: "Exists"
+          effect: "NoExecute"
 
     alertmanager:
       enabled: false
