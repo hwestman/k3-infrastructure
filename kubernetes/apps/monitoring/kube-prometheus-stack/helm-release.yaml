@@ -27,8 +27,7 @@ spec:
   values:
     tolerations:
       - key: "zigbee"
-        operator: "Equal"
-        value: "true"
+        operator: "Exists"
         effect: "NoExecute"
 
     alertmanager:

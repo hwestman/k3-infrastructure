@@ -77,8 +77,7 @@ Changes from the template was updated with
 
 # Taints
 kubectl taint nodes k3s-node-4 need-coral=true:NoExecute
-kubectl taint nodes k3s-node-5 zigbee=true:NoExecuted
-
+kubectl taint nodes k3s-node-5 zigbee:NoExecute
 
 
 
