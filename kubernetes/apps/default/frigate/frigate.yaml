@@ -152,10 +152,9 @@ spec:
           configMap:
             name: frigate-conf
       tolerations:
-        - key: "need-coral"
-          operator: "Equal"
-          value: "true"
-          effect: "NoSchedule"
+        - key: "coral"
+          operator: "Exists"
+          effect: "NoExecute"
 
 ---
 

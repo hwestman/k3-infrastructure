@@ -76,7 +76,7 @@ Changes from the template was updated with
 `git merge v3.14.0 --allow-unrelated-histories`
 
 # Taints
-kubectl taint nodes k3s-node-4 need-coral=true:NoExecute
+kubectl taint nodes k3s-node-4 coral:NoExecute
 kubectl taint nodes k3s-node-5 zigbee:NoExecute
 
 
