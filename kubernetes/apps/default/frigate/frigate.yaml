@@ -155,6 +155,8 @@ spec:
         - key: "coral"
           operator: "Exists"
           effect: "NoExecute"
+      nodeSelector:
+        accelerator: coral
 
 ---
 

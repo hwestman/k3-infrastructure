@@ -75,6 +75,9 @@ Changes from the template was updated with
 `git `
 `git merge v3.14.0 --allow-unrelated-histories`
 
+# Labels
+kubectl label nodes k3s-node-4 accelerator=coral
+
 # Taints
 kubectl taint nodes k3s-node-4 coral:NoExecute
 kubectl taint nodes k3s-node-5 zigbee:NoExecute
