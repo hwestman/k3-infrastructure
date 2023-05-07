@@ -8,8 +8,8 @@ resources:
   - ./mariadb
   - ./home-assistant
   - ./hook-proxy
-  - ./mosquitto
+  - ./mosquitto/ks.yaml
   - ./unifi
   - ./frigate
-  - ./zigbee2mqtt
+  - ./zigbee2mqtt/ks.yaml
   # - ./kube-plex/ks.yaml
