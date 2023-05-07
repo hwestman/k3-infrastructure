@@ -129,7 +129,7 @@ spec:
         app: frigate
     spec:
       containers:
-        - image: blakeblackshear/frigate:stable-amd64
+        - image: ghcr.io/blakeblackshear/frigate:stable
           imagePullPolicy: Always
           name: frigate
           devices:

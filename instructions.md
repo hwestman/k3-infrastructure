@@ -82,8 +82,6 @@ kubectl label nodes k3s-node-4 accelerator=coral
 kubectl taint nodes k3s-node-4 coral:NoExecute
 kubectl taint nodes k3s-node-5 zigbee:NoExecute
 
-
-
 # Bootstrap secrets
 - See home-assistant crd for password ref
 
