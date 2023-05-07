@@ -25,6 +25,12 @@ spec:
   #   - name: rook-ceph-cluster
   #     namespace: rook-ceph
   values:
+    tolerations:
+      - key: "zigbee"
+        operator: "Equal"
+        value: "true"
+        effect: "NoExecute"
+
     alertmanager:
       enabled: false
 

@@ -76,7 +76,11 @@ Changes from the template was updated with
 `git merge v3.14.0 --allow-unrelated-histories`
 
 # Taints
-kubectl taint nodes k3s-node-4 need-coral=true:NoSchedule
+kubectl taint nodes k3s-node-4 need-coral=true:NoExecute
+kubectl taint nodes k3s-node-5 zigbee=true:NoExecuted
+
+
+
 
 # Bootstrap secrets
 - See home-assistant crd for password ref
@@ -92,3 +96,8 @@ kubectl taint nodes k3s-node-4 need-coral=true:NoSchedule
 - kubectl delete node
 - run the nuke Ansible playbook ONLY on that node
 - follow https://github.com/onedr0p/flux-cluster-template/discussions/589
+
+
+# Pi's
+https://docs.fedoraproject.org/en-US/quick-docs/raspberry-pi/
+https://docs.fedoraproject.org/en-US/quick-docs/raspberry-pi/#resizing-the-main-partition-of-the-microsd-card-after-setup_rpi
