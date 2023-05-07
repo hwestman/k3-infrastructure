@@ -77,6 +77,7 @@ Changes from the template was updated with
 
 # Labels
 kubectl label nodes k3s-node-4 accelerator=coral
+kubectl label nodes k3s-node-5 radio=zigbee
 
 # Taints
 kubectl taint nodes k3s-node-4 coral:NoExecute
