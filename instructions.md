@@ -83,6 +83,9 @@ kubectl label nodes k3s-node-5 radio=zigbee
 kubectl taint nodes k3s-node-4 coral:NoExecute
 kubectl taint nodes k3s-node-5 zigbee:NoExecute
 
+# Remove taint
+kubectl taint nodes k3s-node-4 coral:NoExecute-
+
 # Bootstrap secrets
 - See home-assistant crd for password ref
 
