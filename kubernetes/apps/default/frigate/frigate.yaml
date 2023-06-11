@@ -139,6 +139,8 @@ spec:
               name: frigate-volume
             - mountPath: /config
               name: frigate-config-volume
+            # - mountPath: /config
+            #   name: frigate-config-volume
           env:
             - name: FRIGATE_RTSP_PASSWORD
               value: ''
@@ -149,8 +151,11 @@ spec:
           persistentVolumeClaim:
             claimName: frigate-claim
         - name: frigate-config-volume
-          configMap:
-            name: frigate-conf
+          persistentVolumeClaim:
+            claimName: frigate-config-claim
+        # - name: frigate-config-volume
+        #   configMap:
+        #     name: frigate-conf
       tolerations:
         - key: "coral"
           operator: "Exists"
@@ -172,3 +177,18 @@ spec:
   resources:
     requests:
       storage: 10Gi
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: frigate-config-claim
+  namespace: default
+spec:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
