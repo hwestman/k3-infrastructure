@@ -139,8 +139,8 @@ spec:
               name: frigate-volume
             - mountPath: /config
               name: frigate-config-volume
-            # - mountPath: /config
-            #   name: frigate-config-volume
+            - mountPath: /config
+              name: frigate-config-volume
           env:
             - name: FRIGATE_RTSP_PASSWORD
               value: ''
@@ -153,9 +153,9 @@ spec:
         - name: frigate-config-volume
           persistentVolumeClaim:
             claimName: frigate-config-claim
-        # - name: frigate-config-volume
-        #   configMap:
-        #     name: frigate-conf
+        - name: frigate-config-volume
+          configMap:
+            name: frigate-conf
       tolerations:
         - key: "coral"
           operator: "Exists"
