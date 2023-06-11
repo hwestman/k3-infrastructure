@@ -29,44 +29,6 @@ spec:
         - frigate.j-burg11.dev
       secretName: frigate-tls-prod
 
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   annotations:
-#     nginx.org/websocket-services: frigate-rtmp
-#     cert-manager.io/cluster-issuer: letsencrypt-production
-#     nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24
-#     # type of authentication
-#     #nginx.ingress.kubernetes.io/auth-type: basic
-#     # name of the secret that contains the user/password definitions
-#     #nginx.ingress.kubernetes.io/auth-secret: basic-auth
-#     # message to display with an appropriate context why the authentication is required
-#     #nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
-
-#   name: frigate
-#   namespace: default
-# spec:
-#   # defaultBackend:
-#   #   service:
-#   #     name: unifi-video-http
-#   #     port:
-#   #       number: 7080
-#   rules:
-#   - host: "frigate.j-burg11.dev"
-#     http:
-#       paths:
-#       - pathType: Prefix
-#         path: "/"
-#         backend:
-#           service:
-#             name: frigate
-#             port:
-#               number: 5000
-#   tls:
-#   - hosts:
-#     - frigate.j-burg11.dev
-#     secretName: frigate-tls-prod
-
 ---
 
 apiVersion: v1
@@ -83,32 +45,18 @@ spec:
     app: frigate
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
   name: frigate-rtmp
   namespace: default
 spec:
-  selector:
-    app: frigate
   ports:
     - protocol: TCP
       port: 1935
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: frigate-threek
-  namespace: default
-spec:
+      targetPort: 1935
   selector:
     app: frigate
-  ports:
-    - protocol: TCP
-      port: 3000
 
 ---
 
@@ -139,8 +87,6 @@ spec:
               name: frigate-volume
             - mountPath: /config
               name: frigate-config-volume
-            - mountPath: /config
-              name: frigate-config-volume
           env:
             - name: FRIGATE_RTSP_PASSWORD
               value: ''
@@ -153,9 +99,6 @@ spec:
         - name: frigate-config-volume
           persistentVolumeClaim:
             claimName: frigate-config-claim
-        - name: frigate-config-volume
-          configMap:
-            name: frigate-conf
       tolerations:
         - key: "coral"
           operator: "Exists"
