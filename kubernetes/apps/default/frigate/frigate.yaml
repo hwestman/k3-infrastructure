@@ -57,6 +57,20 @@ spec:
       targetPort: 1935
   selector:
     app: frigate
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frigate
+  namespace: default
+spec:
+  ports:
+    - protocol: TCP
+      port: 8554
+      targetPort: 8554
+  selector:
+    app: frigate
 
 ---
 
