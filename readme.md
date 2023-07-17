@@ -1,10 +1,10 @@
 # install nodes
 -  Fedora media writer : https://getfedora.org/en/workstation/download/ (You can get the image there as well)
-- During installation of fedora - make sure partition uses full disks, defaults to 15 gb if set to auto
+- ssh-copy-id root@192.168.1.x
 - dnf check-update
 - sudo dnf upgrade
-- Set up NTP - it was set to manual by default
-- Set NIC name to the same for all nodes - task ansible:prepare
+- Set up NTP - it was set to manual by default in the webui for fedora
+- Set NIC name to the same for all nodes like so:
 ```
 sudo vim /etc/systemd/network/25-eth0.link
 
@@ -21,7 +21,17 @@ storage:
           [Link]
           Name=eth0
 ```
-- ssh-copy-id root@192.168.1.x
+
+- During installation of fedora - make sure partition full disk if we need to, defaults to 15 gb if set to auto
+  - We are attempting to stick to 15 gb til we need a new partion, if we need it we create a new one and leave OS to 15
+
+- Add disk 2
+  - mkdir /mnt/disk2
+  - find UUID - `lsblk -f`
+  - vim etc/fstab
+    - Append `UUID=xxxx-xxxx /mnt/disk2              ext3    defaults,errors=remount-ro  0 1`
+  - reboot - check disk is mounted
+
 
 # Install cluster
 - Checkout repo (this one) - based on https://github.com/onedr0p/flux-cluster-template/issues/311
@@ -88,7 +98,7 @@ kubectl taint nodes k3s-node-4 need-coral=true:NoSchedule
 
 # Adding nodes
 
-# Replacing nodes
+# Replacing nodes - Not attempted yet
 - kubectl delete node
 - run the nuke Ansible playbook ONLY on that node
 
