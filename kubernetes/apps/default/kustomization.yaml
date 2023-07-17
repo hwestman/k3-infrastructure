@@ -5,7 +5,7 @@ resources:
   - ./namespace.yaml
   - ./echo-server/ks.yaml
   - ./hajimari/ks.yaml
-  - ./mariadb
+  - ./mariadb/ks.yaml
   - ./home-assistant
   - ./hook-proxy
   - ./mosquitto/ks.yaml
