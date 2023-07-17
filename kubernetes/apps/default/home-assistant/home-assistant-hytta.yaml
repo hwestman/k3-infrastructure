@@ -64,6 +64,7 @@ metadata:
   name: hytta-code
   namespace: default
 spec:
+  ingressClassName: "nginx"
   rules:
     - host: hytta-code.j-burg11.dev
       http:
