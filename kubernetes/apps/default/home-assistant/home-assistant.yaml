@@ -27,6 +27,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: home-assistant
+  namespace: default
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
     external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
@@ -34,9 +36,8 @@ metadata:
     hajimari.io/enable: "true"
     hajimari.io/icon: "home-assistant"
     nginx.org/websocket-services: home-assistant
-  name: home-assistant
-  namespace: default
 spec:
+  ingressClassName: "nginx"
   rules:
     - host: ha.j-burg11.dev
       http:
