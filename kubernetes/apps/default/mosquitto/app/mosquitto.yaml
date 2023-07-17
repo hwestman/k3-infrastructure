@@ -1,18 +1,19 @@
 ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: mosquitto
-#   namespace: default
-# spec:
-#   ports:
-#     - protocol: TCP
-#       port: 1883
-#   selector:
-#     app: mosquitto
-#   type: ClusterIP
+# When we connect directly to the pod - e.g. frigate
+apiVersion: v1
+kind: Service
+metadata:
+  name: mosquitto
+  namespace: default
+spec:
+  ports:
+    - protocol: TCP
+      port: 1883
+  selector:
+    app: mosquitto
+  type: ClusterIP
 
-# ---
+---
 # apiVersion: v1
 # kind: Service
 # metadata:
@@ -61,10 +62,11 @@
 # ---
 
 ---
+# When external clients connect - e.g. zigbee2mqtt
 apiVersion: v1
 kind: Service
 metadata:
-  name: mosquitto
+  name: mosquitto-lb
   namespace: default
   annotations:
     metallb.universe.tf/loadBalancerIPs: 192.168.1.223
