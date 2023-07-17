@@ -94,6 +94,8 @@ kubectl taint nodes k3s-node-4 need-coral=true:NoSchedule
 # Migrate volumes from Longhorn
 - Set backup target in longhorn to `nfs://192.168.1.49:/volume1/longhorn-backup`
 - Restore backup volumes
+- Set backup-routines
+- Set
 
 
 # Adding nodes

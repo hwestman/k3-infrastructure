@@ -52,42 +52,42 @@ spec:
       volumes:
         - name: mariadb-persistent-storage
           persistentVolumeClaim:
-            claimName: mariadb-pvc-v2
----
+            claimName: mariadb-pvc
+# ---
 
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: mariadb-pvc-v2
-  namespace: default
-spec:
-  storageClassName: longhorn
-  volumeName: mariadb-pv-v2
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
+# kind: PersistentVolumeClaim
+# apiVersion: v1
+# metadata:
+#   name: mariadb-pvc-v2
+#   namespace: default
+# spec:
+#   storageClassName: longhorn
+#   volumeName: mariadb-pv-v2
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 5Gi
 
----
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: mariadb-pv-v2
-  namespace: default
-spec:
-  storageClassName: longhorn
-  # by default, the volume will be not deleted if you delete the PVC, change to
-  # "Delete" if you wish the volume to be deleted automatically with the PVC
-  persistentVolumeReclaimPolicy: Retain
-  capacity:
-    storage: 5Gi
-  accessModes:
-    - ReadWriteOnce
-  csi:
-    driver: driver.longhorn.io
-    fsType: ext4
-    volumeHandle: mariadb-v2
+# ---
+# kind: PersistentVolume
+# apiVersion: v1
+# metadata:
+#   name: mariadb-pv-v2
+#   namespace: default
+# spec:
+#   storageClassName: longhorn
+#   # by default, the volume will be not deleted if you delete the PVC, change to
+#   # "Delete" if you wish the volume to be deleted automatically with the PVC
+#   persistentVolumeReclaimPolicy: Retain
+#   capacity:
+#     storage: 5Gi
+#   accessModes:
+#     - ReadWriteOnce
+#   csi:
+#     driver: driver.longhorn.io
+#     fsType: ext4
+#     volumeHandle: mariadb-v2
 
 ---
 
