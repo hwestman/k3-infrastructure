@@ -27,6 +27,7 @@ metadata:
   name: grafana
   namespace: monitoring
 spec:
+  ingressClassName: "nginx"
   rules:
     - host: grafana.j-burg11.dev
       http:

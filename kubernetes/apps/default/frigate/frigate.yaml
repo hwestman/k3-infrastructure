@@ -13,6 +13,7 @@ metadata:
   name: frigate
   namespace: default
 spec:
+  ingressClassName: "nginx"
   rules:
     - host: frigate.j-burg11.dev
       http:

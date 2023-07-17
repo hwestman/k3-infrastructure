@@ -25,6 +25,7 @@ metadata:
   name: hook-proxy
   namespace: default
 spec:
+  ingressClassName: "nginx"
   rules:
     - host: hook-proxy.j-burg11.dev
       http:
