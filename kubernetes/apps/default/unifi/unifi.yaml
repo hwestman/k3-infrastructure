@@ -2,6 +2,21 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: unifi-inform
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.1.222
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: unifi-controller
+  type: LoadBalancer
+
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: unifi-controller
   namespace: default
 spec:

@@ -91,4 +91,7 @@ kubectl taint nodes k3s-node-4 need-coral=true:NoSchedule
 # Replacing nodes
 - kubectl delete node
 - run the nuke Ansible playbook ONLY on that node
-- follow https://github.com/onedr0p/flux-cluster-template/discussions/589
+
+- follow
+  - https://discord.com/channels/673534664354430999/1066771341212127242/1078088800577785876
+  - https://github.com/onedr0p/flux-cluster-template/discussions/589
