@@ -114,6 +114,9 @@ spec:
         - name: frigate-configmap-volume
           configMap:
             name: frigate-configmap
+            items:
+              - key: config.yml
+                path: config.yml
         - name: frigate-volume
           persistentVolumeClaim:
             claimName: frigate-pvc
