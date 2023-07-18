@@ -85,8 +85,10 @@ Changes from the template was updated with
 `git `
 `git merge v3.14.0 --allow-unrelated-histories`
 
-# Taints
-kubectl taint nodes k3s-node-4 need-coral=true:NoSchedule
+# Taints and labels
+kubectl label nodes k3s-node-4 accelerator=coral
+kubectl taint nodes k3s-node-4 coral=true:NoSchedule
+kubectl taint nodes k3s-node-4 coral=true:NoSchedule-
 
 # Bootstrap secrets
 - See home-assistant crd for password ref
