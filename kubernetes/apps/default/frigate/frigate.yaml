@@ -110,10 +110,10 @@ spec:
       volumes:
         - name: frigate-volume
           persistentVolumeClaim:
-            claimName: frigate-claim
+            claimName: frigate-pvc
         - name: frigate-config-volume
           persistentVolumeClaim:
-            claimName: frigate-config-claim
+            claimName: frigate-config-pvc
       tolerations:
         - key: "coral"
           operator: "Exists"
@@ -126,7 +126,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: frigate-claim
+  name: frigate-pvc
   namespace: default
 spec:
   storageClassName: longhorn
@@ -162,7 +162,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: frigate-config-claim
+  name: frigate-config-pvc
   namespace: default
 spec:
   storageClassName: longhorn
