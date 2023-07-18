@@ -101,6 +101,8 @@ spec:
             - mountPath: /media/frigate
               name: frigate-volume
             - mountPath: /config
+              name: frigate-configmap
+            - mountPath: /config
               name: frigate-config-volume
           env:
             - name: FRIGATE_RTSP_PASSWORD
@@ -108,6 +110,9 @@ spec:
           securityContext:
             privileged: true
       volumes:
+        - name: frigate-configmap
+          configMap:
+            name: frigate-configmap
         - name: frigate-volume
           persistentVolumeClaim:
             claimName: frigate-pvc
