@@ -105,6 +105,7 @@ spec:
             - mountPath: /config/config.yml
               name: frigate-configmap-volume
               subPath: config.yml
+
           env:
             - name: FRIGATE_RTSP_PASSWORD
               value: ''
