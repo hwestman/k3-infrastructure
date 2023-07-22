@@ -18,9 +18,46 @@ spec:
       protocol: TCP
       targetPort: 1400
       port: 1400
+    - name: esphome-1
+      protocol: TCP
+      targetPort: 6052
+      port: 6052
+    - name: esphome-2
+      protocol: TCP
+      targetPort: 6053
+      port: 6053
   selector:
     app: home-assistant
   type: ClusterIP
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: esphome
+  namespace: default
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    hajimari.io/enable: "true"
+    nginx.org/websocket-services: esphome-1
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: esphome.j-burg11.dev
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: esphome-1
+                port:
+                  number: 6052
+  tls:
+    - hosts:
+        - esphome.j-burg11.dev
+      secretName: esphome-tls-prod
 
 ---
 
@@ -115,6 +152,18 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: home-assistant-volume
+          securityContext:
+            runAsUser: 0
+        - name: esphome
+          image: ghcr.io/esphome/esphome
+          imagePullPolicy: Always
+          env:
+            - name: TZ
+              value: Europe/Oslo
+          volumeMounts:
+            - mountPath: /config
+              name: home-assistant-volume
+              subpath: /config/esphome
           securityContext:
             runAsUser: 0
         - name: ha-code
