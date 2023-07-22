@@ -51,7 +51,7 @@ spec:
             path: "/"
             backend:
               service:
-                name: esphome-1
+                name: home-assistant
                 port:
                   number: 6052
   tls:
