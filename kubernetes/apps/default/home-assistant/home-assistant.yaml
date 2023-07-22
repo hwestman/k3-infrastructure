@@ -161,9 +161,9 @@ spec:
             - name: TZ
               value: Europe/Oslo
           volumeMounts:
-            - mountPath: /config
+            - mountPath: /config/esphome
               name: home-assistant-volume
-              subpath: /config/esphome
+              subpath: /config
           securityContext:
             runAsUser: 0
         - name: ha-code
