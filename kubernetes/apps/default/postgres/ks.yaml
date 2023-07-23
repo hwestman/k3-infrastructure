@@ -13,7 +13,7 @@ spec:
     name: home-kubernetes
   healthChecks:
     - apiVersion: apps/v1
-      kind: Deployment
+      kind: StatefulSet
       name: postgres
       namespace: default
   interval: 15m
