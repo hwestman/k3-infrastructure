@@ -29,19 +29,21 @@ spec:
       labels:
         app: postgres
     spec:
-      initContainers:
-        - name: init
-          image: alpine
-          command: ["sh", "-c", "chown 1001:1001 /var/lib/postgresql/data"]
-          volumeMounts:
-            - mountPath: /var/lib/postgresql/data
-              name: postgres-persistent-storage
+      # initContainers:
+      #   - name: init
+      #     image: alpine
+      #     command: ["sh", "-c", "chown 1001:1001 /var/lib/postgresql/data"]
+      #     volumeMounts:
+      #       - mountPath: /var/lib/postgresql/data
+      #         name: postgres-persistent-storage
       containers:
         - image: postgres
           name: postgres
           securityContext:
             runAsUser: 1001
           env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
             - name: POSTGRES_USER
               # value: postgres
               valueFrom:
@@ -58,7 +60,7 @@ spec:
         - containerPort: 5432
           name: postgres
       volumeMounts:
-        - mountPath: /var/lib/postgresql/data
+        - mountPath: /var/lib/postgresql/data/pgdata
           name: postgres-persistent-storage
       volumes:
         - name: postgres-persistent-storage
