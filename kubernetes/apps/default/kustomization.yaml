@@ -11,5 +11,6 @@ resources:
   - ./mosquitto/ks.yaml
   - ./unifi
   - ./frigate
+  - ./postgres/ks.yaml
   #- ./zigbee2mqtt/ks.yaml
   # - ./kube-plex/ks.yaml
