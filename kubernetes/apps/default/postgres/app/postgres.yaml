@@ -29,17 +29,16 @@ spec:
       labels:
         app: postgres
     spec:
-      # initContainers:
-      # - name: init
-      #   image: alpine
-      #   command: ["sh", "-c", "chown 1001:1001 /var/lib/postgresql/data"]
-      #   volumeMounts:
-      #     - mountPath: /var/lib/postgresql/data
-      #       name: postgres-persistent-storage
+      initContainers:
+        - name: init
+          image: alpine
+          command: ["sh", "-c", "chown 1001:1001 /var/lib/postgresql/data"]
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-persistent-storage
       containers:
         - image: postgres
           name: postgres
-
           securityContext:
             runAsUser: 1001
           env:
@@ -66,14 +65,17 @@ spec:
           persistentVolumeClaim:
             claimName: postgres-pvc
 
-
 ---
+
+kind: PersistentVolumeClaim
 apiVersion: v1
-kind: Secret
 metadata:
-  name: postgres
+  name: postgres-pvc
   namespace: default
-type: Opaque
-data:
-  USERNAME:
-  PASSWORD:
+spec:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
