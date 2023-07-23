@@ -45,12 +45,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: teslamate
-                  key: DB_PASSWORD
+                  key: DB_USERNAME
             - name: DATABASE_PASS
               valueFrom:
                 secretKeyRef:
                   name: teslamate
-                  key: DB_USERNAME
+                  key: DB_PASSWORD
             - name: DATABASE_NAME
               value: "teslamate"
             - name: DATABASE_HOST
