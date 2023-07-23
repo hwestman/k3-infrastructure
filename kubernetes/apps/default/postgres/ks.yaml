@@ -11,11 +11,11 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  healthChecks:
-    - apiVersion: apps/v1
-      kind: StatefulSet
-      name: postgres
-      namespace: default
+  # healthChecks:
+  #   - apiVersion: apps/v1
+  #     kind: StatefulSet
+  #     name: postgres
+  #     namespace: default
   interval: 15m
   retryInterval: 1m
   timeout: 3m
