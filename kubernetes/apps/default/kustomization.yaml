@@ -12,5 +12,6 @@ resources:
   - ./unifi
   - ./frigate
   - ./postgres/ks.yaml
+  - ./teslamate/ks.yaml
   #- ./zigbee2mqtt/ks.yaml
   # - ./kube-plex/ks.yaml

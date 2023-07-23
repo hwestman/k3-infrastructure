@@ -109,3 +109,10 @@ kubectl taint nodes k3s-node-4 coral=true:NoSchedule-
 - follow
   - https://discord.com/channels/673534664354430999/1066771341212127242/1078088800577785876
   - https://github.com/onedr0p/flux-cluster-template/discussions/589
+
+
+
+# Postgres & TeslaMate
+create database x;
+create user x with encrypted password '';
+grant all privileges on database x to x;

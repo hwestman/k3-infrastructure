@@ -15,30 +15,6 @@ spec:
 
 ---
 
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: teslamate
-  namespace: default
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    hajimari.io/enable: "true"
-    nginx.org/websocket-services: teslamate
-spec:
-  ingressClassName: "nginx"
-  rules:
-    - host: teslamate.j-burg11.dev
-      http:
-        paths:
-          - pathType: Prefix
-            path: "/"
-            backend:
-              service:
-                name: teslamate
-                port:
-                  number: 4000
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -64,14 +40,17 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: teslamate
-                  key: encryption_key
+                  key: ENCRYPTION_KEY
             - name: DATABASE_USER
-              value: "teslamate"
+              valueFrom:
+                secretKeyRef:
+                  name: teslamate
+                  key: DB_PASSWORD
             - name: DATABASE_PASS
               valueFrom:
                 secretKeyRef:
                   name: teslamate
-                  key: database_pass
+                  key: DB_USERNAME
             - name: DATABASE_NAME
               value: "teslamate"
             - name: DATABASE_HOST
