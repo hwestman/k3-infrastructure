@@ -78,6 +78,6 @@ spec:
             - name: DATABASE_NAME
               value: "teslamate"
             - name: DATABASE_HOST
-              value: "postgres.default"
+              value: "postgres"
             - name: MQTT_HOST
-              value: "mosquitto.default"
+              value: "mosquitto"
