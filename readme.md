@@ -111,6 +111,10 @@ kubectl taint nodes k3s-node-4 coral=true:NoSchedule-
   - https://github.com/onedr0p/flux-cluster-template/discussions/589
 
 
+Manually nuke node:
+SSH into, and run
+- `/usr/local/bin/k3s-killall.sh`
+- `/usr/local/bin/k3s-uninstall.sh`
 
 # Postgres & TeslaMate
 create database x;
