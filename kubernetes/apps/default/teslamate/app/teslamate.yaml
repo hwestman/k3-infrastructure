@@ -81,3 +81,5 @@ spec:
               value: "postgres"
             - name: MQTT_HOST
               value: "mosquitto"
+            - name: DISABLE_MQTT
+              value: "true"
