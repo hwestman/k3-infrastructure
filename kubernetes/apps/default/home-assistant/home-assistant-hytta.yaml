@@ -98,6 +98,15 @@ spec:
       labels:
         app: home-assistant-hytta
     spec:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+                - key: ups
+                  operator: In
+                  values:
+                    - "true"
       containers:
         - name: home-assistant
           image: homeassistant/home-assistant:2023.10.1
