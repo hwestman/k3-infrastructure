@@ -90,6 +90,8 @@ kubectl label nodes k3s-node-4 accelerator=coral
 kubectl taint nodes k3s-node-4 coral=true:NoSchedule
 kubectl taint nodes k3s-node-4 coral=true:NoSchedule-
 
+kubectl label nodes k3s-node-2 ups=true
+
 # Bootstrap secrets
 - See home-assistant crd for password ref
 
@@ -102,19 +104,25 @@ kubectl taint nodes k3s-node-4 coral=true:NoSchedule-
 
 # Adding nodes
 
-# Replacing nodes - Not attempted yet
-- kubectl delete node
-- run the nuke Ansible playbook ONLY on that node
+# Replacing nodes
+1.  kubectl delete node
+2. SSH into node and run
+  - `/usr/local/bin/k3s-killall.sh`
+  - `/usr/local/bin/k3s-uninstall.sh`
+3.  Reboot node
+4. Update ansible inventory `ansible/inventory/hosts.yaml`
+5. Check that version of k3s_release_version still matches the cluster in `ansible/inventory/group_vars/kubernets/k3s.yaml`
+6. Run `task ansible:ping`
+7. Run `task ansible:prepare`
+8. Run `task ansible:install`
 
-- follow
+- Based on
+  - https://discord.com/channels/673534664354430999/1066771341212127242/1172721839324270622
   - https://discord.com/channels/673534664354430999/1066771341212127242/1078088800577785876
   - https://github.com/onedr0p/flux-cluster-template/discussions/589
 
 
-Manually nuke node:
-SSH into, and run
-- `/usr/local/bin/k3s-killall.sh`
-- `/usr/local/bin/k3s-uninstall.sh`
+
 
 # Postgres & TeslaMate
 create database x;
