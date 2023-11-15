@@ -13,7 +13,7 @@ spec:
     name: home-kubernetes
   healthChecks:
     - apiVersion: apps/v1
-      kind: StatefulSet
+      kind: Deployment
       name: home-assistant-hytta
       namespace: default
   interval: 15m
