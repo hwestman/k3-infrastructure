@@ -135,16 +135,6 @@ spec:
   selector:
     matchLabels:
       app: home-assistant
-  affinity:
-    nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 1
-          preference:
-            matchExpressions:
-              - key: ups
-                operator: In
-                values:
-                  - true
   template:
     metadata:
       labels:
@@ -152,7 +142,16 @@ spec:
     spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
-
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: ups
+                    operator: In
+                    values:
+                      - true
       containers:
         - name: home-assistant
           image: ghcr.io/home-assistant/home-assistant:2023.10.1
