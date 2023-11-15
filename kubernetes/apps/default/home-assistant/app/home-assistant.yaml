@@ -243,8 +243,6 @@ metadata:
   namespace: default
 spec:
   storageClassName: longhorn
-  # by default, the volume will be not deleted if you delete the PVC, change to
-  # "Delete" if you wish the volume to be deleted automatically with the PVC
   persistentVolumeReclaimPolicy: Retain
   capacity:
     storage: 10Gi
@@ -264,8 +262,6 @@ metadata:
   namespace: default
 spec:
   storageClassName: longhorn
-  # by default, the volume will be not deleted if you delete the PVC, change to
-  # "Delete" if you wish the volume to be deleted automatically with the PVC
   persistentVolumeReclaimPolicy: Retain
   capacity:
     storage: 10Gi
