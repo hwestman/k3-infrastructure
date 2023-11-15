@@ -142,15 +142,16 @@ spec:
     spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
-      nodeAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 1
-            preference:
-              matchExpressions:
-                - key: ups
-                  operator: In
-                  values:
-                    - true
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: ups
+                    operator: In
+                    values:
+                      - true
       containers:
         - name: home-assistant
           image: ghcr.io/home-assistant/home-assistant:2023.10.1
