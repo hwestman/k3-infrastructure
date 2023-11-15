@@ -232,6 +232,7 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: longhorn
+  volumeName: esphome-pv
 
 ---
 
@@ -253,3 +254,23 @@ spec:
     driver: driver.longhorn.io
     fsType: ext4
     volumeHandle: home-assistant
+
+---
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: esphome-pv
+  namespace: default
+spec:
+  storageClassName: longhorn
+  # by default, the volume will be not deleted if you delete the PVC, change to
+  # "Delete" if you wish the volume to be deleted automatically with the PVC
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
