@@ -6,12 +6,14 @@ resources:
   - ./echo-server/ks.yaml
   - ./hajimari/ks.yaml
   - ./mariadb/ks.yaml
-  - ./home-assistant
+  - ./home-assistant/ks.yaml
+  - ./home-assistant-hytta/ks.yaml
   - ./hook-proxy
   - ./mosquitto/ks.yaml
   - ./unifi
   - ./frigate
   - ./postgres/ks.yaml
   - ./teslamate/ks.yaml
+
   #- ./zigbee2mqtt/ks.yaml
   # - ./kube-plex/ks.yaml
