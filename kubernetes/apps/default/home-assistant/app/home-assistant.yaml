@@ -274,3 +274,4 @@ spec:
   csi:
     driver: driver.longhorn.io
     fsType: ext4
+    volumeHandle: esphome
