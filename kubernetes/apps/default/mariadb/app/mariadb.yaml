@@ -29,6 +29,16 @@ spec:
       labels:
         app: mariadb
     spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: ups
+                    operator: In
+                    values:
+                      - "true"
       containers:
         - image: mariadb:11.0.2
           name: mariadb
