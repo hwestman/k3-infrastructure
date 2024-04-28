@@ -1,0 +1,24 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airconnect
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: airconnect
+  template:
+    metadata:
+      labels:
+        app: airconnect
+    spec:
+      hostNetwork: true
+      containers:
+        - name: airconnect
+          image: 1activegeek/airconnect:1.0.8
+          imagePullPolicy: Always
+          env:
+            - name: TZ
+              value: 'Europe/Oslo'
