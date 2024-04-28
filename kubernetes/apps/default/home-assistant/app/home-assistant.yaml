@@ -203,6 +203,9 @@ spec:
           env:
             - name: TZ
               value: Europe/Oslo
+          volumeMounts:
+            - mountPath: /config
+              name: home-assistant-volume
           securityContext:
             runAsUser: 0
       volumes:
