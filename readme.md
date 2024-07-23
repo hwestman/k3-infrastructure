@@ -92,6 +92,50 @@ kubectl taint nodes k3s-node-4 coral=true:NoSchedule-
 
 kubectl label nodes k3s-node-2 ups=true
 
+
+
+# When the initial cert expires after a year...
+  - `kubectl create serviceaccount my-admin-sa -n default`
+  - `kubectl create clusterrolebinding my-admin-sa-binding --clusterrole=cluster-admin --serviceaccount=default:my-admin-sa`
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-admin-sa-token
+  namespace: my-namespace
+  annotations:
+    kubernetes.io/service-account.name: my-admin-sa
+type: kubernetes.io/service-account-token
+```
+
+  - `kubectl apply -f sa-secret.yaml`
+  - `TOKEN=$(kubectl get secret my-admin-sa-token -n default -o jsonpath='{.data.token}' | base64 --decode)`
+  - `kubectl get secret $(kubectl get sa default -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.ca\.crt}' | base64 --decode > ca.crt`
+  - `SERVER_URL=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}') # This will probably give you the internal ip, make sure you use the cluster ip`
+
+```
+cat <<EOF > ./admin-sa-kubeconfig
+apiVersion: v1
+kind: Config
+clusters:
+- cluster:
+    certificate-authority: ./ca.crt
+    server: $SERVER_URL
+  name: my-cluster
+contexts:
+- context:
+    cluster: my-cluster
+    user: my-admin-sa
+  name: my-admin-context
+current-context: my-admin-context
+users:
+- name: my-admin-sa
+  user:
+    token: $TOKEN
+EOF
+```
+
 # Bootstrap secrets
 - See home-assistant crd for password ref
 
