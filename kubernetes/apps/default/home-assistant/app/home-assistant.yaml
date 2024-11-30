@@ -159,6 +159,8 @@ spec:
           env:
             - name: TZ
               value: Europe/Oslo
+            - name: "PYTHONPATH"
+              value: "/config/deps"
           volumeMounts:
             - mountPath: /config
               name: home-assistant-volume
