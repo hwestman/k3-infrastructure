@@ -170,7 +170,7 @@ spec:
               service:
                 name: unifi-controller
                 port:
-                  number: 443
+                  number: 8443
             path: /
             pathType: Prefix
   tls:
