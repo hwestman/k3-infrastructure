@@ -4,44 +4,17 @@ kind: Service
 metadata:
   name: music-assistant
   namespace: default
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.1.228
 spec:
   ports:
-    - name: music-assistant
-      protocol: TCP
-      targetPort: 8095
+    - name: webui
       port: 8095
+      targetPort: 8095
+      protocol: TCP
   selector:
     app: music-assistant
-  type: ClusterIP
-
----
-
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: music-assistant
-  namespace: default
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    hajimari.io/enable: "true"
-    nginx.org/websocket-services: music-assistant
-spec:
-  ingressClassName: "nginx"
-  rules:
-    - host: ma.j-burg11.dev
-      http:
-        paths:
-          - pathType: Prefix
-            path: "/"
-            backend:
-              service:
-                name: music-assistant
-                port:
-                  number: 8095
-  tls:
-    - hosts:
-        - ma.j-burg11.dev
-      secretName: ma-tls-prod
+  type: LoadBalancer
 
 ---
 
