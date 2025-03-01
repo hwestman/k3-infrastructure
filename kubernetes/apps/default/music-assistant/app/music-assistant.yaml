@@ -16,6 +16,35 @@ spec:
 
 ---
 
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: music-assistant
+  namespace: default
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    hajimari.io/enable: "true"
+    nginx.org/websocket-services: music-assistant
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: ma.j-burg11.dev
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: music-assistant
+                port:
+                  number: 8095
+  tls:
+    - hosts:
+        - ma.j-burg11.dev
+      secretName: ma-tls-prod
+
+---
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
