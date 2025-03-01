@@ -38,7 +38,7 @@ spec:
           image: ghcr.io/music-assistant/server:latest
           imagePullPolicy: Always
           env:
-            - LOG_LEVEL:
+            - name: LOG_LEVEL
               value: info
             - name: TZ
               value: Europe/Oslo
