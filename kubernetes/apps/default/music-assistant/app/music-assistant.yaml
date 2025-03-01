@@ -81,7 +81,7 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
-  csi:
-    driver: driver.longhorn.io
-    fsType: ext4
-    volumeHandle: music-assistant
+  # csi:
+  #   driver: driver.longhorn.io
+  #   fsType: ext4
+  #   volumeHandle: music-assistant
