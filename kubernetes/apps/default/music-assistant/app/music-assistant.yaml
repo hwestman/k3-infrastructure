@@ -65,22 +65,22 @@ spec:
     requests:
       storage: 1Gi
   storageClassName: longhorn
-  volumeName: music-assistant-pv
+#   volumeName: music-assistant-pv
 
----
+# ---
 
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: music-assistant-pv
-  namespace: default
-spec:
-  storageClassName: longhorn
-  persistentVolumeReclaimPolicy: Retain
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
+# kind: PersistentVolume
+# apiVersion: v1
+# metadata:
+#   name: music-assistant-pv
+#   namespace: default
+# spec:
+#   storageClassName: longhorn
+#   persistentVolumeReclaimPolicy: Retain
+#   capacity:
+#     storage: 1Gi
+#   accessModes:
+#     - ReadWriteOnce
   # csi:
   #   driver: driver.longhorn.io
   #   fsType: ext4
