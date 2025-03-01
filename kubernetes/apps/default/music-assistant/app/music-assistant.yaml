@@ -9,7 +9,7 @@ metadata:
 spec:
   ports:
     - name: webui
-      port: 8095
+      port: 80
       targetPort: 8095
       protocol: TCP
   selector:
