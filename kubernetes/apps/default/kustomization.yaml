@@ -7,7 +7,7 @@ resources:
   - ./hajimari/ks.yaml
   - ./mariadb/ks.yaml
   - ./home-assistant/ks.yaml
-  # - ./music-assistant/ks.yaml
+  - ./music-assistant/ks.yaml
   - ./home-assistant-hytta/ks.yaml
   - ./hook-proxy
   - ./mosquitto/ks.yaml
