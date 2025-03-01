@@ -1,0 +1,87 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: music-assistant
+  namespace: default
+spec:
+  ports:
+    - name: music-assistant
+      protocol: TCP
+      targetPort: 8095
+      port: 8095
+  selector:
+    app: music-assistant
+  type: ClusterIP
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: music-assistant
+  namespace: default
+spec:
+  serviceName: music-assistant
+  replicas: 1
+  selector:
+    matchLabels:
+      app: music-assistant
+  template:
+    metadata:
+      labels:
+        app: music-assistant
+    spec:
+      hostNetwork: true
+      containers:
+        - name: music-assistant
+          image: ghcr.io/music-assistant/server:latest
+          imagePullPolicy: Always
+          env:
+            - LOG_LEVEL:
+              value: info
+            - name: TZ
+              value: Europe/Oslo
+          volumeMounts:
+            - mountPath: /data
+              name: music-assistant-volume
+          securityContext:
+            runAsUser: 0
+      volumes:
+        - name: music-assistant-volume
+          persistentVolumeClaim:
+            claimName: music-assistant-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: music-assistant-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: longhorn
+  volumeName: music-assistant-pv
+
+---
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: music-assistant-pv
+  namespace: default
+spec:
+  storageClassName: longhorn
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeHandle: music-assistant
