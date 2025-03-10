@@ -7,15 +7,15 @@ resources:
   - ./hajimari/ks.yaml
   - ./mariadb/ks.yaml
   - ./home-assistant/ks.yaml
-  #- ./music-assistant/ks.yaml
   - ./home-assistant-hytta/ks.yaml
   - ./hook-proxy
   - ./mosquitto/ks.yaml
   - ./unifi
-  - ./frigate
+  - ./frigate/ks.yaml
   - ./postgres/ks.yaml
   - ./teslamate/ks.yaml
   - ./airconnect
 
+  #- ./music-assistant/ks.yaml
   #- ./zigbee2mqtt/ks.yaml
   # - ./kube-plex/ks.yaml
