@@ -12,7 +12,7 @@ resources:
   - ./hook-proxy
   - ./mosquitto/ks.yaml
   - ./unifi
-  #- ./frigate
+  - ./frigate
   - ./postgres/ks.yaml
   - ./teslamate/ks.yaml
   - ./airconnect
