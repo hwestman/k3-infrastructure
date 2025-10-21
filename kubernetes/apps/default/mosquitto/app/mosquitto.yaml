@@ -29,6 +29,7 @@ spec:
   selector:
     app: mosquitto
   type: LoadBalancer
+  externalTrafficPolicy: Local
 
 ---
 
