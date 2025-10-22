@@ -98,11 +98,12 @@ spec:
             - sh
             - -c
             - |
-              if [ ! -f /config/config.yml ]; then
-                echo "Copying initial config..."
+              if [ ! -f /config/config.yml ] || [ ! -s /config/config.yml ]; then
+                echo "Copying initial config (file missing or empty)..."
                 cp /config-template/config.yml /config/config.yml
+                echo "Config copied successfully"
               else
-                echo "Config already exists, skipping..."
+                echo "Config already exists and is not empty, skipping..."
               fi
           volumeMounts:
             - mountPath: /config
