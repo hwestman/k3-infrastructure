@@ -91,6 +91,24 @@ spec:
       labels:
         app: frigate
     spec:
+      initContainers:
+        - name: config-init
+          image: busybox:latest
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -f /config/config.yml ]; then
+                echo "Copying initial config..."
+                cp /config-template/config.yml /config/config.yml
+              else
+                echo "Config already exists, skipping..."
+              fi
+          volumeMounts:
+            - mountPath: /config
+              name: frigate-config-volume
+            - mountPath: /config-template
+              name: frigate-configmap-volume
       containers:
         - image: ghcr.io/blakeblackshear/frigate:stable
           imagePullPolicy: Always
@@ -109,6 +127,12 @@ spec:
           securityContext:
             privileged: true
       volumes:
+        - name: frigate-configmap-volume
+          configMap:
+            name: frigate-configmap
+            items:
+              - key: config.yml
+                path: config.yml
         - name: frigate-volume
           persistentVolumeClaim:
             claimName: frigate-pvc
