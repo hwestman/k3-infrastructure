@@ -114,13 +114,13 @@ spec:
         - image: ghcr.io/blakeblackshear/frigate:stable
           imagePullPolicy: Always
           name: frigate
-          devices:
-            - /dev/apex_0:/dev/apex_0
           volumeMounts:
             - mountPath: /media/frigate
               name: frigate-volume
             - mountPath: /config
               name: frigate-config-volume
+            - mountPath: /dev/apex_0
+              name: coral-device
 
           env:
             - name: FRIGATE_RTSP_PASSWORD
@@ -128,6 +128,9 @@ spec:
           securityContext:
             privileged: true
       volumes:
+        - name: coral-device
+          hostPath:
+            path: /dev/apex_0
         - name: frigate-configmap-volume
           configMap:
             name: frigate-configmap
