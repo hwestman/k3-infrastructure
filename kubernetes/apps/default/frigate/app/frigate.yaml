@@ -121,6 +121,8 @@ spec:
               name: frigate-config-volume
             - mountPath: /dev/apex_0
               name: coral-device
+            - mountPath: /dev/dri
+              name: dri-device
 
           env:
             - name: FRIGATE_RTSP_PASSWORD
@@ -131,6 +133,9 @@ spec:
         - name: coral-device
           hostPath:
             path: /dev/apex_0
+        - name: dri-device
+          hostPath:
+            path: /dev/dri
         - name: frigate-configmap-volume
           configMap:
             name: frigate-configmap
