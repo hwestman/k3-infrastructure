@@ -127,6 +127,8 @@ spec:
           env:
             - name: FRIGATE_RTSP_PASSWORD
               value: ''
+            - name: LIBVA_DRIVER_NAME
+              value: radeonsi
           securityContext:
             privileged: true
       volumes:
