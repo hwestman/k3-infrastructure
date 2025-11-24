@@ -112,7 +112,7 @@ spec:
               name: frigate-configmap-volume
       containers:
         - image: ghcr.io/blakeblackshear/frigate:stable
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           name: frigate
           volumeMounts:
             - mountPath: /media/frigate

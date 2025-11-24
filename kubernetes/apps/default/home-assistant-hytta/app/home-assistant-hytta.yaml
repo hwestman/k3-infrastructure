@@ -113,7 +113,7 @@ spec:
       containers:
         - name: home-assistant
           image: homeassistant/home-assistant:2023.10.1
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           env:
             - name: TZ
               value: Europe/Oslo
@@ -124,7 +124,7 @@ spec:
             runAsUser: 0
         - name: ha-code
           image: codercom/code-server:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           args:
             - '--port=8080'
             - '--extensions-dir=/config/.vscode'

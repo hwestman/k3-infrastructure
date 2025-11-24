@@ -199,7 +199,7 @@ spec:
     spec:
       containers:
         - image: jacobalberty/unifi:v7.4
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           name: unifi-controller
           volumeMounts:
             - mountPath: /unifi

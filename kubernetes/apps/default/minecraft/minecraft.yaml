@@ -74,7 +74,7 @@ spec:
       containers:
         - name: main
           image: itzg/minecraft-bedrock-server
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
                 name: minecraft-bedrock

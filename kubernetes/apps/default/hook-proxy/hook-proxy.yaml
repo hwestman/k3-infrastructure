@@ -62,7 +62,7 @@ spec:
       containers:
         - name: hook-proxy
           image: hwestman/hook-proxy:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           env:
             - name: TZ
               value: 'Europe/Oslo'
