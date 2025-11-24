@@ -124,6 +124,19 @@ spec:
 
 ---
 
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: home-assistant-pdb
+  namespace: default
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: home-assistant
+
+---
+
 
 apiVersion: apps/v1
 kind: StatefulSet
@@ -133,6 +146,9 @@ metadata:
 spec:
   serviceName: home-assistant
   replicas: 1
+  podManagementPolicy: OrderedReady
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: home-assistant
@@ -141,6 +157,10 @@ spec:
       labels:
         app: home-assistant
     spec:
+      # WARNING: hostNetwork=true is a security risk. Only use if absolutely needed for:
+      # - mDNS device discovery (Chromecast, Sonos, etc.)
+      # - Direct network access for integrations
+      # Consider alternatives: hostPort, NodePort, or network plugins that support multicast
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       affinity:
@@ -156,31 +176,85 @@ spec:
       containers:
         - name: home-assistant
           image: ghcr.io/home-assistant/home-assistant:2025.10.3
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           env:
             - name: TZ
               value: Europe/Oslo
-            # - name: "PYTHONPATH"
-            #   value: "/config/deps"
+          ports:
+            - containerPort: 8123
+              name: http
+              protocol: TCP
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "2000m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8123
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8123
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
           volumeMounts:
             - mountPath: /config
               name: home-assistant-volume
           securityContext:
             runAsUser: 0
+            #allowPrivilegeEscalation: false
         - name: esphome
           image: ghcr.io/esphome/esphome
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           env:
             - name: TZ
               value: Europe/Oslo
+          ports:
+            - containerPort: 6052
+              name: esphome-web
+              protocol: TCP
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          livenessProbe:
+            tcpSocket:
+              port: 6052
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 6052
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
           volumeMounts:
             - mountPath: /config
               name: esphome-volume
           securityContext:
             runAsUser: 0
+            allowPrivilegeEscalation: false
         - name: ha-code
           image: codercom/code-server:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           args:
             - '--port=8080'
             - '--extensions-dir=/config/.vscode'
@@ -193,6 +267,35 @@ spec:
                 secretKeyRef:
                   name: ha-code-password
                   key: password
+          ports:
+            - containerPort: 8080
+              name: code-server
+              protocol: TCP
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
           volumeMounts:
             - mountPath: /config
               name: home-assistant-volume
@@ -200,6 +303,7 @@ spec:
               name: esphome-volume
           securityContext:
             runAsUser: 0
+            #allowPrivilegeEscalation: false
       volumes:
         - name: home-assistant-volume
           persistentVolumeClaim:
