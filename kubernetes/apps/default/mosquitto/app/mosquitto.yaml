@@ -29,7 +29,7 @@ spec:
   selector:
     app: mosquitto
   type: LoadBalancer
-  externalTrafficPolicy: Local
+  externalTrafficPolicy: Cluster
 
 ---
 
@@ -53,10 +53,33 @@ spec:
       containers:
         - name: mosquitto
           image: eclipse-mosquitto:2.0.15
-          # ports:
-          # - containerPort: 80
+          ports:
+            - containerPort: 1883
+              name: mqtt
+              protocol: TCP
           securityContext:
             runAsUser: 0
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          livenessProbe:
+            tcpSocket:
+              port: 1883
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 1883
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
           volumeMounts:
             - mountPath: /mosquitto/data
               name: mosquitto-volume
@@ -81,6 +104,8 @@ metadata:
 data:
   mosquitto.conf: |
     log_dest stdout
+    log_type all
+    connection_messages true
     listener 1883
     listener 9090
     protocol websockets
