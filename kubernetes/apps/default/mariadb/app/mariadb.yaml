@@ -63,21 +63,15 @@ spec:
               memory: "2Gi"
               cpu: "1000m"
           livenessProbe:
-            exec:
-              command:
-                - bash
-                - -c
-                - mysqladmin ping -h localhost -u root -p$MYSQL_ROOT_PASSWORD
+            tcpSocket:
+              port: 3306
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
           readinessProbe:
-            exec:
-              command:
-                - bash
-                - -c
-                - mysqladmin ping -h localhost -u root -p$MYSQL_ROOT_PASSWORD
+            tcpSocket:
+              port: 3306
             initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 3

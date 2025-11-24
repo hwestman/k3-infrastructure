@@ -87,8 +87,8 @@ spec:
             timeoutSeconds: 3
             failureThreshold: 2
           volumeMounts:
-        - mountPath: /var/lib/postgresql/data
-          name: postgres-persistent-storage
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-persistent-storage
       volumes:
         - name: postgres-persistent-storage
           persistentVolumeClaim:
