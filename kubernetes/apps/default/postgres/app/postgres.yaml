@@ -56,10 +56,37 @@ spec:
                 secretKeyRef:
                   name: postgres
                   key: PASSWORD
-      ports:
-        - containerPort: 5432
-          name: postgres
-      volumeMounts:
+          ports:
+            - containerPort: 5432
+              name: postgres
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - $(POSTGRES_USER)
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - $(POSTGRES_USER)
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
+          volumeMounts:
         - mountPath: /var/lib/postgresql/data
           name: postgres-persistent-storage
       volumes:

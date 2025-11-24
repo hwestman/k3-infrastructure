@@ -55,6 +55,33 @@ spec:
           ports:
             - containerPort: 3306
               name: mariadb
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          livenessProbe:
+            exec:
+              command:
+                - bash
+                - -c
+                - mysqladmin ping -h localhost -u root -p$MYSQL_ROOT_PASSWORD
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - bash
+                - -c
+                - mysqladmin ping -h localhost -u root -p$MYSQL_ROOT_PASSWORD
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
           volumeMounts:
             - name: mariadb-persistent-storage
               mountPath: /var/lib/mysql

@@ -114,6 +114,31 @@ spec:
         - image: ghcr.io/blakeblackshear/frigate:stable
           imagePullPolicy: IfNotPresent
           name: frigate
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "1000m"
+            limits:
+              memory: "4Gi"
+              cpu: "4000m"
+          livenessProbe:
+            httpGet:
+              path: /api/version
+              port: 5000
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /api/version
+              port: 5000
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
           volumeMounts:
             - mountPath: /media/frigate
               name: frigate-volume
