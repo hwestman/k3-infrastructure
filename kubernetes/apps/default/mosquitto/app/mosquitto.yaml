@@ -18,18 +18,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mosquitto-lb
+  name: mosquitto-nodeport
   namespace: default
-  annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.1.224
 spec:
   ports:
     - port: 1883
       targetPort: 1883
+      nodePort: 31883
   selector:
     app: mosquitto
-  type: LoadBalancer
-  externalTrafficPolicy: Local
+  type: NodePort
 
 ---
 
