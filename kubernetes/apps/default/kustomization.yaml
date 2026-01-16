@@ -8,8 +8,9 @@ resources:
   - ./mariadb/ks.yaml
   - ./home-assistant/ks.yaml
   - ./home-assistant-hytta/ks.yaml
+  - ./ghcr-credentials/ks.yaml
   - ./hook-proxy
-  - ./tbd
+  - ./tbd/ks.yaml
   - ./mosquitto/ks.yaml
   - ./unifi
   - ./frigate/ks.yaml

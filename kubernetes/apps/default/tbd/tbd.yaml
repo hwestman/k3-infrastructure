@@ -57,8 +57,6 @@ spec:
       labels:
         app: tbd
     spec:
-      imagePullSecrets:
-        - name: ghcr-credentials
       containers:
         - name: tbd
           image: ghcr.io/hwestman/tbd:latest
