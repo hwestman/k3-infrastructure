@@ -9,6 +9,7 @@ resources:
   - ./home-assistant/ks.yaml
   - ./home-assistant-hytta/ks.yaml
   - ./hook-proxy
+  - ./tbd
   - ./mosquitto/ks.yaml
   - ./unifi
   - ./frigate/ks.yaml
