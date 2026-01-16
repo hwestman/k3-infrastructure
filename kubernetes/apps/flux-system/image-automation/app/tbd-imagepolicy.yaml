@@ -1,0 +1,15 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: tbd
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: tbd
+  policy:
+    alphabetical:
+      order: desc
+  filterTags:
+    pattern: '^(?P<ts>\d{8}T\d{6}Z)-sha-(?P<sha>[0-9a-f]{7,40})$'
+    extract: '$ts'

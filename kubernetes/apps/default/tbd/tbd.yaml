@@ -59,7 +59,7 @@ spec:
     spec:
       containers:
         - name: tbd
-          image: ghcr.io/hwestman/tbd:latest
+          image: ghcr.io/hwestman/tbd:19700101T000000Z-sha-0000000 # {"$imagepolicy": "flux-system:tbd"}
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

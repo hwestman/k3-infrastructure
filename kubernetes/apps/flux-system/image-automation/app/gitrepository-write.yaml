@@ -1,0 +1,18 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: home-kubernetes-write
+  namespace: flux-system
+spec:
+  url: https://github.com/hwestman/k3-infrastructure
+  interval: 30m
+  ref:
+    branch: main
+  secretRef:
+    name: home-kubernetes-write-auth
+  ignore: |
+    # exclude all
+    /*
+    # include kubernetes directory
+    !/kubernetes
