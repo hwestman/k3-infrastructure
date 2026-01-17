@@ -9,6 +9,6 @@ spec:
     name: tbd
   policy:
     alphabetical:
-      order: desc
+      order: asc
   filterTags:
     pattern: '^(?P<ts>\d{8}T\d{6}Z)-sha-(?P<sha>[0-9a-f]{7,40})$'
