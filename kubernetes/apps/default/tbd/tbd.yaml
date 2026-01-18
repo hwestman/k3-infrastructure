@@ -97,6 +97,8 @@ spec:
               value: "Europe/Oslo"
             - name: DATA_DIR
               value: "/data"
+            - name: NEXT_PUBLIC_REPO_TYPE
+              value: "file"
           volumeMounts:
             - name: data
               mountPath: /data
