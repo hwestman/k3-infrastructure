@@ -39,6 +39,19 @@ spec:
         - "tbd.${SECRET_DOMAIN}"
       secretName: tbd-tls-prod
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tbd-data
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn-dual-replica
+  resources:
+    requests:
+      storage: 10Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -80,3 +93,15 @@ spec:
           env:
             - name: TZ
               value: "Europe/Oslo"
+            - name: NEXT_PUBLIC_REPO_TYPE
+              value: "file"
+            - name: DATA_DIR
+              value: "/data"
+
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: tbd-data
