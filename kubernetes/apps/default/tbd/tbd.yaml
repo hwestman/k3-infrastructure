@@ -69,7 +69,7 @@ spec:
     spec:
       containers:
         - name: tbd
-          image: ghcr.io/hwestman/tbd:20260118T170047Z-sha-15bfb5d # {"$imagepolicy": "flux-system:tbd"}
+          image: ghcr.io/hwestman/tbd:20260118T201130Z-sha-bbcf988 # {"$imagepolicy": "flux-system:tbd"}
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -97,7 +97,6 @@ spec:
               value: "file"
             - name: DATA_DIR
               value: "/data"
-
           volumeMounts:
             - name: data
               mountPath: /data
