@@ -39,6 +39,32 @@ spec:
         - "tbd.${SECRET_DOMAIN}"
       secretName: tbd-tls-prod
 ---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tbd-qronicle-redirect
+  namespace: default
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    nginx.ingress.kubernetes.io/permanent-redirect: "https://tbd.${SECRET_DOMAIN}"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "qronicle.io"
+      http:
+        paths:
+          - pathType: Exact
+            path: "/1"
+            backend:
+              service:
+                name: tbd
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - "qronicle.io"
+      secretName: qronicle-tls-prod
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
