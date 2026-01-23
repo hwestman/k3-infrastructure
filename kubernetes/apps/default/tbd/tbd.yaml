@@ -45,7 +45,8 @@ metadata:
   name: tbd-qronicl-redirect
   namespace: default
   annotations:
-    nginx.ingress.kubernetes.io/permanent-redirect: "https://tbd.${SECRET_DOMAIN}"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/permanent-redirect: "https://tbd.j-burg11.dev/alb_31a0c123-7d13-4c0f-8661-f0f9d0bd10e9"
 spec:
   ingressClassName: "nginx"
   rules:
