@@ -45,7 +45,6 @@ metadata:
   name: tbd-qronicle-redirect
   namespace: default
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
     nginx.ingress.kubernetes.io/permanent-redirect: "https://tbd.${SECRET_DOMAIN}"
 spec:
   ingressClassName: "nginx"
@@ -60,10 +59,6 @@ spec:
                 name: tbd
                 port:
                   number: 80
-  tls:
-    - hosts:
-        - "qronicle.io"
-      secretName: qronicle-tls-prod
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
