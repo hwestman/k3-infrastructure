@@ -71,7 +71,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: tbd
-          image: ghcr.io/hwestman/tbd:20260123T074811Z-sha-f40ce31 # {"$imagepolicy": "flux-system:tbd"}
+          image: ghcr.io/hwestman/tbd:20260123T080115Z-sha-db040c9 # {"$imagepolicy": "flux-system:tbd"}
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
