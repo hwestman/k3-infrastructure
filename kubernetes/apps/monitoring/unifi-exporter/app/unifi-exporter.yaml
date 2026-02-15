@@ -55,16 +55,14 @@ spec:
     spec:
       containers:
         - name: unifi-exporter
-          image: ghcr.io/ndom91/unifi-exporter:v2.1.3
+          image: docker.io/erisamoe/prometheus-unifi-exporter:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: metrics
               containerPort: 9130
           env:
-            - name: UNIFI_HOST
-              value: "unifi-controller.default.svc.cluster.local"
-            - name: UNIFI_PORT
-              value: "8443"
+            - name: UNIFI_ADDR
+              value: "unifi-controller.default.svc.cluster.local:8443"
             - name: UNIFI_USER
               valueFrom:
                 secretKeyRef:
@@ -77,8 +75,8 @@ spec:
                   key: password
             - name: UNIFI_SITE
               value: "default"
-            - name: UNIFI_VERIFY_SSL
-              value: "false"
+            - name: UNIFI_INSECURE
+              value: "true"
           resources:
             requests:
               cpu: 50m
