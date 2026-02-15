@@ -6,29 +6,8 @@ metadata:
   namespace: monitoring
 spec:
   storageClassName: longhorn
-  volumeName: prometheus-pv
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 25Gi
-
----
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: prometheus-pv
-  namespace: monitoring
-spec:
-  storageClassName: longhorn
-  # by default, the volume will be not deleted if you delete the PVC, change to
-  # "Delete" if you wish the volume to be deleted automatically with the PVC
-  persistentVolumeReclaimPolicy: Retain
-  capacity:
-    storage: 25Gi
-  accessModes:
-    - ReadWriteOnce
-  csi:
-    driver: driver.longhorn.io
-    fsType: ext4
-    volumeHandle: prometheus
+      storage: 50Gi
