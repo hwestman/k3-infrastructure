@@ -6,3 +6,4 @@ resources:
   - ./kube-prometheus-stack/ks.yaml
   - ./grafana/ks.yaml
   - ./snmp-exporter/ks.yaml
+  - ./unifi-exporter/ks.yaml
