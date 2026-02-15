@@ -6,3 +6,4 @@ resources:
   #- ./kubernetes-dashboard/ks.yaml
   - ./kube-prometheus-stack
   - ./grafana
+  - ./snmp-exporter
