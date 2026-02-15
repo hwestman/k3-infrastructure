@@ -34,11 +34,25 @@ data:
             try:
                 url = f'https://{self.host}/api/auth/login'
                 print(f"[LOGIN] Attempting login to {url}", file=sys.stderr, flush=True)
+                print(f"[LOGIN] Username: {self.user}", file=sys.stderr, flush=True)
+
+                # Try newer UniFi auth endpoint for v7.x
                 resp = self.session.post(url, json={'username': self.user, 'password': self.passwd}, timeout=5)
                 print(f"[LOGIN] Status code: {resp.status_code}", file=sys.stderr, flush=True)
-                if resp.status_code != 200:
+
+                if resp.status_code == 401:
+                    # Try alternative endpoint for newer versions
+                    print(f"[LOGIN] Got 401, trying alternative endpoint", file=sys.stderr, flush=True)
+                    url_alt = f'https://{self.host}/api/v2/authentication/login'
+                    resp = self.session.post(url_alt, json={'username': self.user, 'password': self.passwd}, timeout=5)
+                    print(f"[LOGIN] Alternative endpoint returned: {resp.status_code}", file=sys.stderr, flush=True)
+
+                if resp.status_code not in [200, 201]:
                     print(f"[LOGIN] Response text: {resp.text[:500]}", file=sys.stderr, flush=True)
-                return resp.status_code == 200
+                    return False
+
+                print(f"[LOGIN] Login successful!", file=sys.stderr, flush=True)
+                return True
             except Exception as e:
                 print(f"[ERROR] Login failed: {type(e).__name__}: {e}", file=sys.stderr, flush=True)
                 import traceback
@@ -102,6 +116,16 @@ data:
 
     import sys
     print('[START] Testing connection to Unifi controller...', file=sys.stderr, flush=True)
+
+    # Test basic connectivity first
+    try:
+        url = f'https://{exporter.host}/status'
+        print(f'[START] Testing URL: {url}', file=sys.stderr, flush=True)
+        resp = exporter.session.get(url, timeout=5)
+        print(f'[START] Status endpoint returned: {resp.status_code}', file=sys.stderr, flush=True)
+    except Exception as e:
+        print(f'[ERROR] Cannot reach controller at {exporter.host}: {e}', file=sys.stderr, flush=True)
+
     if exporter.login():
         print('[START] Connection test successful!', file=sys.stderr, flush=True)
         stations = exporter.get_stations()
