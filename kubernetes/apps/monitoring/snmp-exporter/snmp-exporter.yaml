@@ -24,18 +24,56 @@ metadata:
   namespace: monitoring
 data:
   snmp.yml: |
-    ---
     edgemax:
       walk:
-        - 1.3.6.1.2.1.1
-        - 1.3.6.1.2.1.2
-        - 1.3.6.1.2.1.25
-      version: 2
-      max_repetitions: 25
-      timeout: 5s
-      retries: 3
-      auth:
-        community: public
+        - 1.3.6.1.2.1.31.1.1.1.10
+        - 1.3.6.1.2.1.31.1.1.1.6
+      get:
+        - 1.3.6.1.2.1.25.1.1.0
+        - 1.3.6.1.2.1.25.2.2.0
+        - 1.3.6.1.4.1.2021.11.11.0
+        - 1.3.6.1.4.1.2021.4.11.0
+        - 1.3.6.1.4.1.2021.4.15.0
+        - 1.3.6.1.4.1.2021.4.5.0
+      metrics:
+        - name: hrSystemUptime
+          oid: 1.3.6.1.2.1.25.1.1
+          type: gauge
+          help: The amount of time since this host was last initialized
+        - name: hrMemorySize
+          oid: 1.3.6.1.2.1.25.2.2
+          type: gauge
+          help: The amount of physical read-write main memory contained by the host
+        - name: ifHCOutOctets
+          oid: 1.3.6.1.2.1.31.1.1.1.10
+          type: counter
+          help: The total number of octets transmitted out of the interface
+          indexes:
+            - labelname: ifIndex
+              type: gauge
+        - name: ifHCInOctets
+          oid: 1.3.6.1.2.1.31.1.1.1.6
+          type: counter
+          help: The total number of octets received on the interface
+          indexes:
+            - labelname: ifIndex
+              type: gauge
+        - name: ssCpuIdle
+          oid: 1.3.6.1.4.1.2021.11.11
+          type: gauge
+          help: The percentage of processor time spent idle
+        - name: memTotalFree
+          oid: 1.3.6.1.4.1.2021.4.11
+          type: gauge
+          help: The total amount of memory free or available for use on this host
+        - name: memCached
+          oid: 1.3.6.1.4.1.2021.4.15
+          type: gauge
+          help: The total amount of real or virtual memory allocated for use as cached memory
+        - name: memTotalReal
+          oid: 1.3.6.1.4.1.2021.4.5
+          type: gauge
+          help: The total amount of real/physical memory installed on this host
 
 ---
 apiVersion: apps/v1
