@@ -116,8 +116,12 @@ spec:
         - name: unifi-exporter
           image: python:3.11-slim
           imagePullPolicy: IfNotPresent
-          command: ["/usr/local/bin/python3"]
-          args: ["/app/exporter.py"]
+          command: ["/bin/bash"]
+          args:
+            - -c
+            - |
+              pip install requests --quiet
+              python /app/exporter.py
           ports:
             - name: metrics
               containerPort: 9130
