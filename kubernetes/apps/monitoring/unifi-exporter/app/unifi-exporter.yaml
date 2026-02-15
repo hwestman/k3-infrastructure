@@ -2,17 +2,76 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: unifi-exporter-config
+  name: unifi-exporter-script
   namespace: monitoring
 data:
-  config.yaml: |
-    # Default settings for detecting Unifi Dream Machine / Unifi Protect
-    # These should be read from somewhere in the controller's interface
-    # For details, see: https://github.com/ndom91/unifi-exporter
-    ---
-    # Unifi Controller settings
-    # These can also be set via environment variables for Docker/K8s:
-    # UNIFI_HOST, UNIFI_PORT, UNIFI_USER, UNIFI_PASS, UNIFI_SITE, UNIFI_VERIFY_SSL
+  exporter.py: |
+    #!/usr/bin/env python3
+    import os
+    import requests
+    import time
+    from http.server import HTTPServer, BaseHTTPRequestHandler
+    import urllib3
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    class UnifiExporter:
+        def __init__(self):
+            self.host = os.getenv('UNIFI_ADDR', 'unifi-controller.default.svc.cluster.local:8443')
+            self.user = os.getenv('UNIFI_USER', 'admin')
+            self.passwd = os.getenv('UNIFI_PASS', 'password')
+            self.site = os.getenv('UNIFI_SITE', 'default')
+            self.session = requests.Session()
+            self.session.verify = False
+
+        def login(self):
+            try:
+                url = f'https://{self.host}/api/auth/login'
+                self.session.post(url, json={'username': self.user, 'password': self.passwd})
+            except Exception as e:
+                print(f"Login error: {e}")
+
+        def get_stations(self):
+            try:
+                url = f'https://{self.host}/api/s/{self.site}/stat/sta'
+                resp = self.session.get(url)
+                return resp.json().get('data', [])
+            except Exception as e:
+                print(f"Get stations error: {e}")
+                return []
+
+        def export_metrics(self):
+            metrics = [
+                '# HELP unifi_stations_received_bytes_total Total bytes received',
+                '# TYPE unifi_stations_received_bytes_total counter',
+            ]
+
+            self.login()
+            for sta in self.get_stations():
+                rx_bytes = sta.get('rx_bytes', 0)
+                hostname = sta.get('hostname', sta.get('mac', 'unknown')).replace('-', '_')
+                metrics.append(f'unifi_stations_received_bytes_total{{host="{hostname}"}} {rx_bytes}')
+
+            return '\n'.join(metrics)
+
+    exporter = UnifiExporter()
+
+    class MetricsHandler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            if self.path == '/metrics':
+                self.send_response(200)
+                self.send_header('Content-type', 'text/plain')
+                self.end_headers()
+                self.wfile.write(exporter.export_metrics().encode())
+            else:
+                self.send_response(404)
+                self.end_headers()
+
+        def log_message(self, format, *args):
+            pass
+
+    server = HTTPServer(('0.0.0.0', 9130), MetricsHandler)
+    print('Unifi Exporter listening on :9130')
+    server.serve_forever()
 
 ---
 apiVersion: v1
@@ -55,8 +114,10 @@ spec:
     spec:
       containers:
         - name: unifi-exporter
-          image: docker.io/jacobalberty/unifi-exporter:latest
+          image: python:3.11-slim
           imagePullPolicy: IfNotPresent
+          command: ["/usr/local/bin/python3"]
+          args: ["/app/exporter.py"]
           ports:
             - name: metrics
               containerPort: 9130
@@ -75,8 +136,9 @@ spec:
                   key: password
             - name: UNIFI_SITE
               value: "default"
-            - name: UNIFI_INSECURE
-              value: "true"
+          volumeMounts:
+            - name: script
+              mountPath: /app
           resources:
             requests:
               cpu: 50m
@@ -96,3 +158,8 @@ spec:
               port: metrics
             initialDelaySeconds: 10
             periodSeconds: 10
+      volumes:
+        - name: script
+          configMap:
+            name: unifi-exporter-script
+            defaultMode: 0755
