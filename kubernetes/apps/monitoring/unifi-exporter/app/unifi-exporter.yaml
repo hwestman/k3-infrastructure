@@ -55,7 +55,7 @@ spec:
     spec:
       containers:
         - name: unifi-exporter
-          image: docker.io/erisamoe/prometheus-unifi-exporter:latest
+          image: docker.io/jacobalberty/unifi-exporter:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: metrics
