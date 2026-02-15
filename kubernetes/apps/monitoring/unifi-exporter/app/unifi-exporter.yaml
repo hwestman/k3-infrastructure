@@ -16,39 +16,63 @@ data:
 
     class UnifiExporter:
         def __init__(self):
+            import sys
             self.host = os.getenv('UNIFI_ADDR', 'unifi-controller.default.svc.cluster.local:8443')
             self.user = os.getenv('UNIFI_USER', 'admin')
             self.passwd = os.getenv('UNIFI_PASS', 'password')
             self.site = os.getenv('UNIFI_SITE', 'default')
             self.session = requests.Session()
             self.session.verify = False
+            self.session.headers.update({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            })
+            print(f"[INIT] Unifi Exporter configured for {self.host} site={self.site} user={self.user}", file=sys.stderr, flush=True)
 
         def login(self):
+            import sys
             try:
                 url = f'https://{self.host}/api/auth/login'
-                self.session.post(url, json={'username': self.user, 'password': self.passwd})
+                print(f"[LOGIN] Attempting login to {url}", file=sys.stderr, flush=True)
+                resp = self.session.post(url, json={'username': self.user, 'password': self.passwd}, timeout=5)
+                print(f"[LOGIN] Status code: {resp.status_code}", file=sys.stderr, flush=True)
+                if resp.status_code != 200:
+                    print(f"[LOGIN] Response text: {resp.text[:500]}", file=sys.stderr, flush=True)
+                return resp.status_code == 200
             except Exception as e:
-                print(f"Login error: {e}")
+                print(f"[ERROR] Login failed: {type(e).__name__}: {e}", file=sys.stderr, flush=True)
+                import traceback
+                print(traceback.format_exc(), file=sys.stderr, flush=True)
+                return False
 
         def get_stations(self):
+            import sys
             try:
                 url = f'https://{self.host}/api/s/{self.site}/stat/sta'
-                resp = self.session.get(url)
-                return resp.json().get('data', [])
+                print(f"[STATIONS] Fetching from {url}", file=sys.stderr, flush=True)
+                resp = self.session.get(url, timeout=5)
+                print(f"[STATIONS] Status code: {resp.status_code}", file=sys.stderr, flush=True)
+                if resp.status_code != 200:
+                    print(f"[STATIONS] Response text: {resp.text[:500]}", file=sys.stderr, flush=True)
+                data = resp.json().get('data', [])
+                print(f"[STATIONS] Found {len(data)} connected stations", file=sys.stderr, flush=True)
+                return data
             except Exception as e:
-                print(f"Get stations error: {e}")
+                print(f"[ERROR] Get stations failed: {type(e).__name__}: {e}", file=sys.stderr, flush=True)
+                import traceback
+                print(traceback.format_exc(), file=sys.stderr, flush=True)
                 return []
 
         def export_metrics(self):
             metrics = [
-                '# HELP unifi_stations_received_bytes_total Total bytes received',
+                '# HELP unifi_stations_received_bytes_total Total bytes received by connected stations',
                 '# TYPE unifi_stations_received_bytes_total counter',
             ]
 
             self.login()
             for sta in self.get_stations():
                 rx_bytes = sta.get('rx_bytes', 0)
-                hostname = sta.get('hostname', sta.get('mac', 'unknown')).replace('-', '_')
+                hostname = sta.get('hostname', sta.get('mac', 'unknown')).replace('-', '_').replace(':', '')
                 metrics.append(f'unifi_stations_received_bytes_total{{host="{hostname}"}} {rx_bytes}')
 
             return '\n'.join(metrics)
@@ -57,11 +81,18 @@ data:
 
     class MetricsHandler(BaseHTTPRequestHandler):
         def do_GET(self):
+            import sys
             if self.path == '/metrics':
+                print(f"[METRICS] Scrape request from {self.client_address[0]}", file=sys.stderr, flush=True)
                 self.send_response(200)
                 self.send_header('Content-type', 'text/plain')
                 self.end_headers()
-                self.wfile.write(exporter.export_metrics().encode())
+                try:
+                    metrics = exporter.export_metrics()
+                    self.wfile.write(metrics.encode())
+                except Exception as e:
+                    print(f"[ERROR] export_metrics failed: {e}", file=sys.stderr, flush=True)
+                    self.wfile.write(b"# Error exporting metrics\n")
             else:
                 self.send_response(404)
                 self.end_headers()
@@ -69,8 +100,17 @@ data:
         def log_message(self, format, *args):
             pass
 
+    import sys
+    print('[START] Testing connection to Unifi controller...', file=sys.stderr, flush=True)
+    if exporter.login():
+        print('[START] Connection test successful!', file=sys.stderr, flush=True)
+        stations = exporter.get_stations()
+        print(f'[START] Got {len(stations)} stations', file=sys.stderr, flush=True)
+    else:
+        print('[WARN] Connection test failed - metrics will be empty', file=sys.stderr, flush=True)
+
     server = HTTPServer(('0.0.0.0', 9130), MetricsHandler)
-    print('Unifi Exporter listening on :9130')
+    print('Unifi Exporter listening on :9130', file=sys.stderr, flush=True)
     server.serve_forever()
 
 ---
