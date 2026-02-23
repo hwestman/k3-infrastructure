@@ -24,42 +24,20 @@ metadata:
 spec:
   ingressClassName: "nginx"
   rules:
-    - host: "tbd.${SECRET_DOMAIN}"
+    - host: "tbd2.${SECRET_DOMAIN}"
       http:
         paths:
           - pathType: Prefix
             path: "/"
             backend:
               service:
-                name: tbd
+                name: tbd2
                 port:
                   number: 80
   tls:
     - hosts:
-        - "tbd.${SECRET_DOMAIN}"
-      secretName: tbd-tls-prod
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: tbd-qronicl-redirect
-  namespace: default
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/permanent-redirect: "https://tbd.j-burg11.dev/alb_31a0c123-7d13-4c0f-8661-f0f9d0bd10e9"
-spec:
-  ingressClassName: "nginx"
-  rules:
-    - host: "qronicl.io"
-      http:
-        paths:
-          - pathType: Exact
-            path: "/1"
-            backend:
-              service:
-                name: tbd
-                port:
-                  number: 80
+        - "tbd2.${SECRET_DOMAIN}"
+      secretName: tbd2-tls-prod
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
