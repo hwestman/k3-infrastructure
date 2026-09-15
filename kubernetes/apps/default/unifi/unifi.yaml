@@ -1,36 +1,7 @@
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: unifi-controller
-  namespace: default
-  annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.1.222
-spec:
-  ports:
-    - name: inform
-      port: 8080
-      targetPort: 8080
-      protocol: TCP
-    - name: webui
-      port: 8443
-      targetPort: 8443
-      protocol: TCP
-    - name: stun
-      port: 3478
-      targetPort: 3478
-      protocol: UDP
-    - name: portal
-      port: 8880
-      targetPort: 8880
-      protocol: TCP
-    - name: speedtest
-      port: 6789
-      targetPort: 6789
-      protocol: TCP
-  selector:
-    app: unifi-controller
-  type: LoadBalancer
+# Service (MetalLB, 192.168.1.222) removed -- controller migrated to the
+# new cluster, which now claims that IP via Cilium L2 announcement.
+# StatefulSet/PVC below stay as a rollback fallback for now; only the
+# Service is pruned so Flux stops fighting the new cluster for the IP.
 
 # ---
 # apiVersion: v1
