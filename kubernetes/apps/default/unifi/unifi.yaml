@@ -158,7 +158,9 @@ metadata:
   namespace: default
 spec:
   serviceName: "unifi-controller"
-  replicas: 1
+  # Migrated to the new Talos cluster. Scaled to 0 rather than removed from
+  # git -- PVC/PV (Retain policy) stay as a data safety net for now.
+  replicas: 0
   selector:
     matchLabels:
       app: unifi-controller
