@@ -21,6 +21,10 @@ metadata:
   namespace: default
 spec:
   serviceName: postgres
+  # teslamate (its only consumer) was already scaled to 0 and was never
+  # part of the new cluster migration - scaled down alongside it
+  # (2026-09-16).
+  replicas: 0
   selector:
     matchLabels:
       app: postgres
