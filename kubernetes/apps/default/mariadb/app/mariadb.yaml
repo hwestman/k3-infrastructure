@@ -21,6 +21,9 @@ metadata:
   namespace: default
 spec:
   serviceName: "mariadb"
+  # Migrated to the new Talos cluster (2026-09-16). PVC stays as a data
+  # safety net for now - see unifi-controller for the same pattern.
+  replicas: 0
   selector:
     matchLabels:
       app: mariadb
