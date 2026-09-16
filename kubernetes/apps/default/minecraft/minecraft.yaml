@@ -61,7 +61,7 @@ metadata:
   name: bds
 spec:
   # never more than 1 since BDS is not horizontally scalable
-  replicas: 1
+  replicas: 0
   serviceName: bds
   selector:
     matchLabels:

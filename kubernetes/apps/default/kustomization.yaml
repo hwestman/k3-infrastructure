@@ -3,17 +3,17 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
-  - ./echo-server/ks.yaml
-  - ./hajimari/ks.yaml
+#  - ./echo-server/ks.yaml
+#  - ./hajimari/ks.yaml
   - ./mariadb/ks.yaml
   - ./home-assistant/ks.yaml
   - ./home-assistant-hytta/ks.yaml
   - ./ghcr-credentials/ks.yaml
   - ./hook-proxy
-  - ./tbd/ks.yaml
+#  - ./tbd/ks.yaml
   - ./mosquitto/ks.yaml
   - ./unifi
-  - ./frigate/ks.yaml
+#  - ./frigate/ks.yaml
   - ./postgres/ks.yaml
   - ./teslamate/ks.yaml
   - ./airconnect
