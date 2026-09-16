@@ -5,7 +5,8 @@ metadata:
   name: airconnect
   namespace: default
 spec:
-  replicas: 1
+  # Migrated to the new Talos cluster (2026-09-16).
+  replicas: 0
   selector:
     matchLabels:
       app: airconnect

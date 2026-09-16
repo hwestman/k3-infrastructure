@@ -39,7 +39,9 @@ metadata:
   labels:
     app: mosquitto
 spec:
-  replicas: 1
+  # Migrated to the new Talos cluster (2026-09-16). zigbeepi's
+  # zigbee2mqtt already repointed to the new broker.
+  replicas: 0
   strategy:
     type: Recreate
     rollingUpdate: null

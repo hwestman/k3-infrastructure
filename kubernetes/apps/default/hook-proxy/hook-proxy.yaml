@@ -50,7 +50,9 @@ metadata:
   name: hook-proxy
   namespace: default
 spec:
-  replicas: 1
+  # Migrated to the new Talos cluster (2026-09-16). Old Tive webhook
+  # already disabled on the sending side.
+  replicas: 0
   selector:
     matchLabels:
       app: hook-proxy
